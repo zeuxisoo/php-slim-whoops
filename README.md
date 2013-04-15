@@ -19,7 +19,7 @@ curl -sS https://getcomposer.org/installer | php
 - Install/update your dependencies
 
 ```
-composer install
+php composer.phar install
 ```
 
 ## Usage
