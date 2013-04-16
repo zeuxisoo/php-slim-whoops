@@ -32,5 +32,4 @@ $app->add(new \Zeuxisoo\Whoops\Provider\Slim\WhoopsMiddleware);
 
 ## Important Note
 
-- Please make sure set the `$app->config('debug')` is **false**. If yes, it will handled by slim
 - Please make sure you already installed **whoops** library.
