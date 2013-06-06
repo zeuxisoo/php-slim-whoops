@@ -30,6 +30,15 @@ php composer.phar install
 $app->add(new \Zeuxisoo\Whoops\Provider\Slim\WhoopsMiddleware);
 ```
 
+## Options
+
+- Opening referenced files with your favorite editor or IDE
+
+```
+$app->config('whoops.editor', 'sublime');  // add this line
+$app->add(new \Zeuxisoo\Whoops\Provider\Slim\WhoopsMiddleware);
+```
+
 ## Important Note
 
 - Please make sure you already installed **whoops** library.

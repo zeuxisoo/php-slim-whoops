@@ -45,6 +45,12 @@ class WhoopsMiddleware extends Middleware {
 				));
 			});
 
+			// Open with editor if editor is set
+			$whoops_editor = $app->config('whoops.editor');
+			if ($whoops_editor !== null) {
+				$app->config('whoops.error_page_handler')->setEditor($whoops_editor);
+			}
+
 			$app->config('whoops', new Run);
 			$app->config('whoops')->pushHandler($app->config('whoops.error_page_handler'));
 			$app->config('whoops')->pushHandler($app->config('whoops.slim_info_handler'));
