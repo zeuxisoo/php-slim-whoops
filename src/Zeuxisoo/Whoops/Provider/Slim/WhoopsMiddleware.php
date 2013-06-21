@@ -5,6 +5,7 @@ use \Slim\Middleware;
 
 use Whoops\Run;
 use Whoops\Handler\PrettyPageHandler;
+use Whoops\Handler\JsonResponseHandler;
 
 class WhoopsMiddleware extends Middleware {
 	public function call() {
@@ -15,6 +16,8 @@ class WhoopsMiddleware extends Middleware {
 			$app->config('debug', false);
 
 			$app->config('whoops.error_page_handler', new PrettyPageHandler);
+			$app->config('whoops.error_json_handler', new JsonResponseHandler);
+			$app->config('whoops.error_json_handler')->onlyForAjaxRequests(true);
 			$app->config('whoops.slim_info_handler', function() use ($app) {
 				try {
 					$request = $app->request();
@@ -53,6 +56,7 @@ class WhoopsMiddleware extends Middleware {
 
 			$app->config('whoops', new Run);
 			$app->config('whoops')->pushHandler($app->config('whoops.error_page_handler'));
+			$app->config('whoops')->pushHandler($app->config('whoops.error_json_handler'));
 			$app->config('whoops')->pushHandler($app->config('whoops.slim_info_handler'));
 			$app->error(array($app->config('whoops'), Run::EXCEPTION_HANDLER));
 		}
