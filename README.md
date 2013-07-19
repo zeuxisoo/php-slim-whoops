@@ -42,3 +42,17 @@ $app->add(new \Zeuxisoo\Whoops\Provider\Slim\WhoopsMiddleware);
 ## Important Note
 
 - Please make sure you already installed **whoops** library.
+
+## Testing
+
+- Run the test cases
+
+```
+php vendor/bin/codecept run
+```
+
+- Create the acceptance case
+
+```
+php vendor/bin/codecept generate:cept acceptance [case-name]
+```

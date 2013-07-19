@@ -17,7 +17,8 @@
     },
     "require-dev": {
     	"slim/slim": "2.*",
-    	"filp/whoops": "1.*"
+    	"filp/whoops": "1.*",
+        "codeception/codeception": "@stable"
     },
     "autoload": {
         "psr-0": {
