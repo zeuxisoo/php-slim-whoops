@@ -25,14 +25,21 @@ class WhoopsMiddleware extends Middleware {
 					return;
 				}
 
-				$app->config('whoops.error_page_handler')->addDataTable('Slim Application', array(
+				$current_route = $app->router()->getCurrentRoute();
+				$route_details = array();
+				if ($current_route !== null) {
+					$route_details = array(
+						'Route Name'       => $current_route->getName() ?: '<none>',
+						'Route Pattern'    => $current_route->getPattern() ?: '<none>',
+						'Route Middleware' => $current_route->getMiddleware() ?: '<none>',
+					);
+				}
+
+				$app->config('whoops.error_page_handler')->addDataTable('Slim Application', array_merge(array(
 					'Charset'          => $request->headers('ACCEPT_CHARSET'),
 					'Locale'           => $request->getContentCharset() ?: '<none>',
-					'Route Name'       => $app->router()->getCurrentRoute()->getName() ?: '<none>',
-					'Route Pattern'    => $app->router()->getCurrentRoute()->getPattern() ?: '<none>',
-					'Route Middleware' => $app->router()->getCurrentRoute()->getMiddleware() ?: '<none>',
 					'Application Class'=> get_class($app)
-				));
+				), $route_details));
 
 				$app->config('whoops.error_page_handler')->addDataTable('Slim Application (Request)', array(
 					'URI'         => $request->getRootUri(),
