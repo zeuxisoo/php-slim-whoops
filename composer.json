@@ -18,7 +18,7 @@
     "require-dev": {
     	"slim/slim": "2.*",
     	"filp/whoops": "1.*",
-        "codeception/codeception": "@stable"
+        "phpunit/phpunit": "3.7.*@dev"
     },
     "autoload": {
         "psr-0": {
