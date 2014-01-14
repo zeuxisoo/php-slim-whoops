@@ -48,11 +48,5 @@ $app->add(new \Zeuxisoo\Whoops\Provider\Slim\WhoopsMiddleware);
 - Run the test cases
 
 ```
-php vendor/bin/codecept run
-```
-
-- Create the acceptance case
-
-```
-php vendor/bin/codecept generate:cept acceptance [case-name]
+php vendor/bin/phpunit
 ```
