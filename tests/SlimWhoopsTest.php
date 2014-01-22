@@ -49,4 +49,24 @@ class MessageTest extends PHPUnit_Framework_TestCase {
         $this->assertEmpty($app->response()->body());
         $this->assertEquals(500, $app->response()->status());
     }
+
+    public function testSetEditor() {
+        \Slim\Environment::mock(array(
+            'SCRIPT_NAME' => '/index.php',
+            'PATH_INFO' => '/foo'
+        ));
+
+        $app = new \Slim\Slim();
+        $app->config('whoops.editor', 'sublime');
+        $app->get('/foo', function () {
+            echo "It is work";
+        });
+
+        $middleware = new WhoopsMiddleware();
+        $middleware->setApplication($app);
+        $middleware->setNextMiddleware($app);
+        $middleware->call();
+
+        $this->assertEquals('subl://open?url=file://test_path&line=168', $app->whoopsPrettyPageHandler->getEditorHref('test_path', 168));
+    }
 }
