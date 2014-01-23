@@ -1,3 +1,7 @@
+## Status
+
+[![Build Status](https://travis-ci.org/zeuxisoo/php-slim-whoops.png?branch=master)](https://travis-ci.org/zeuxisoo/php-slim-whoops)
+
 ## Installing
 
 - Install the composer
