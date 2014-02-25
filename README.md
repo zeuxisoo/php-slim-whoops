@@ -12,11 +12,23 @@ curl -sS https://getcomposer.org/installer | php
 
 - Edit composer.json
 
+The latest version
+
 ```
 {
 	"require": {
 		"zeuxisoo/slim-whoops": "dev-master"
 	}
+}
+```
+
+Then older version (without dependency injection support)
+
+```
+{
+    "require": {
+        "zeuxisoo/slim-whoops": "0.1.0"
+    }
 }
 ```
 
