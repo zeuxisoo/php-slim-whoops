@@ -22,7 +22,7 @@ The latest version
 }
 ```
 
-Then older version (without dependency injection support)
+The older version (without dependency injection support)
 
 ```
 {
