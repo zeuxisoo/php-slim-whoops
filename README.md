@@ -17,7 +17,7 @@ The latest version
 ```
 {
 	"require": {
-		"zeuxisoo/slim-whoops": "dev-master"
+		"zeuxisoo/slim-whoops": "0.2.0"
 	}
 }
 ```
