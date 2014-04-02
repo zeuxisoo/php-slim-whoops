@@ -1,6 +1,5 @@
 {
     "name": "zeuxisoo/slim-whoops",
-    "version": "0.2.0",
     "type": "library",
     "description": "PHP whoops error on slim framework",
     "keywords": ["error", "exception", "whoops", "slim"],
