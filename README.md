@@ -55,10 +55,6 @@ $app->config('whoops.editor', 'sublime');  // add this line
 $app->add(new \Zeuxisoo\Whoops\Provider\Slim\WhoopsMiddleware);
 ```
 
-## Important Note
-
-- Please make sure you already installed **whoops** library.
-
 ## Testing
 
 - Run the test cases
