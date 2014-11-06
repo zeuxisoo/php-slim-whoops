@@ -17,7 +17,7 @@ The latest version
 ```
 {
 	"require": {
-		"zeuxisoo/slim-whoops": "0.2.0"
+		"zeuxisoo/slim-whoops": "0.3.0"
 	}
 }
 ```
@@ -57,7 +57,9 @@ $app->add(new \Zeuxisoo\Whoops\Provider\Slim\WhoopsMiddleware);
 
 ## Important Note
 
-- Please make sure you already installed **whoops** library.
+In the version `0.3.0`, the `whoops` library is installed by default base on the [Whoops Framework Integration Document](https://github.com/filp/whoops/blob/master/docs/Framework%20Integration.md#contributing-an-integration-with-a-framework)
+
+If you are using the version `0.2.0`, you must to install the `whoops` library manually.
 
 ## Testing
 
