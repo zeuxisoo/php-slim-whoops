@@ -12,13 +12,13 @@
             "role": "Developer"
     }],
     "require": {
-        "php": ">=5.3.0",
+        "php": ">=5.4.0",
         "filp/whoops": "1.*"
     },
     "require-dev": {
-    	"slim/slim": "2.*",
+    	"slim/slim": "dev-develop",
     	"filp/whoops": "1.*",
-        "phpunit/phpunit": "3.7.*@dev"
+        "phpunit/phpunit": "4.5.*"
     },
     "autoload": {
         "psr-0": {

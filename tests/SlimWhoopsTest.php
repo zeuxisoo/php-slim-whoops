@@ -1,4 +1,6 @@
 <?php
+use Slim\App;
+use Slim\Http\Environment;
 use Zeuxisoo\Whoops\Provider\Slim\WhoopsMiddleware;
 
 class MessageTest extends PHPUnit_Framework_TestCase {
@@ -11,62 +13,87 @@ class MessageTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testLoadNormal() {
-        \Slim\Environment::mock(array(
-            'SCRIPT_NAME' => '/index.php',
-            'PATH_INFO' => '/foo'
-        ));
+        $app = new App();
+        $app['environment'] = function () {
+            return Environment::mock([
+                'SCRIPT_NAME' => '/index.php',
+                'REQUEST_URI' => '/foo',
+                'REQUEST_METHOD' => 'GET'
+            ]);
+        };
 
-        $app = new \Slim\Slim();
-        $app->get('/foo', function () {
-            echo "It is work";
+        // Set get method and response
+        $app->get('/foo', function ($req, $res, $args) {
+            $res->write('It is work');
+            return $res;
         });
 
-        $middleware = new WhoopsMiddleware();
-        $middleware->setApplication($app);
-        $middleware->setNextMiddleware($app);
-        $middleware->call();
+        // Set middleware
+        $app->add(new WhoopsMiddleware);
 
-        $this->assertEquals("It is work", $app->response()->body());
-        $this->assertEquals(200, $app->response()->status());
+        // Invoke app
+        ob_start();
+        $response = $app->run();
+        ob_end_clean();
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('It is work', (string) $response->getBody());
     }
 
     public function testException() {
-        \Slim\Environment::mock(array(
-            'SCRIPT_NAME' => '/index.php',
-            'PATH_INFO' => '/foo'
-        ));
+        $app = new App();
+        $app['environment'] = function () {
+            return Environment::mock([
+                'SCRIPT_NAME' => '/index.php',
+                'REQUEST_URI' => '/foo',
+                'REQUEST_METHOD' => 'GET'
+            ]);
+        };
 
-        $app = new \Slim\Slim();
-        $app->get('/foo', function () {
+        $app->get('/foo', function ($req, $res, $args) {
             throw new \Exception('Test Message', 100);
+            return $res;
         });
 
-        $middleware = new WhoopsMiddleware();
-        $middleware->setApplication($app);
-        $middleware->setNextMiddleware($app);
-        $middleware->call();
+        // Set middleware
+        $app->add(new WhoopsMiddleware);
 
-        $this->assertEmpty($app->response()->body());
-        $this->assertEquals(500, $app->response()->status());
+        // Invoke app
+        ob_start();
+        $response = $app->run();
+        ob_end_clean();
+
+        $this->assertEquals(500, $response->getStatusCode());
+        $this->assertContains('Test Message', (string) $response->getBody());
     }
 
-    public function testSetEditor() {
-        \Slim\Environment::mock(array(
-            'SCRIPT_NAME' => '/index.php',
-            'PATH_INFO' => '/foo'
-        ));
+    public function testMiddlewareIsWorkingAndEditorIsSet() {
+        $app = new App([
+            'debug' => true,
+            'whoops.editor' => 'sublime',
+        ]);
 
-        $app = new \Slim\Slim();
-        $app->config('whoops.editor', 'sublime');
-        $app->get('/foo', function () {
-            echo "It is work";
+        $app['environment'] = function () {
+            return Environment::mock([
+                'SCRIPT_NAME' => '/index.php',
+                'REQUEST_URI' => '/foo',
+                'REQUEST_METHOD' => 'GET'
+            ]);
+        };
+
+        $app->get('/foo', function ($req, $res, $args) {
+            return $res;
         });
 
-        $middleware = new WhoopsMiddleware();
-        $middleware->setApplication($app);
-        $middleware->setNextMiddleware($app);
-        $middleware->call();
+        $app->add(new WhoopsMiddleware);
 
-        $this->assertEquals('subl://open?url=file://test_path&line=168', $app->whoopsPrettyPageHandler->getEditorHref('test_path', 168));
+        // Invoke app
+        $response = $app->run();
+
+        // Get added whoops handlers
+        $handlers = $app['whoops']->getHandlers();
+
+        $this->assertEquals(2, count($handlers));
+        $this->assertEquals('subl://open?url=file://test_path&line=169', $handlers[0]->getEditorHref('test_path', 169));
     }
 }
