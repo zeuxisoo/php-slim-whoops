@@ -12,17 +12,27 @@ curl -sS https://getcomposer.org/installer | php
 
 - Edit composer.json
 
-The latest version
+If you are using the slim framework `3.0.0`, please use the `0.4.0` branch.
 
 ```
 {
-	"require": {
-		"zeuxisoo/slim-whoops": "0.3.0"
-	}
+    "require": {
+        "zeuxisoo/slim-whoops": "0.4.0.*@dev"
+    }
 }
 ```
 
-The older version (without dependency injection support)
+If you are using the slim framework `2.*`, Please use the `master` branch.
+
+```
+{
+    "require": {
+        "zeuxisoo/slim-whoops": "0.3.0"
+    }
+}
+```
+
+And, the older version (without dependency injection support)
 
 ```
 {
@@ -51,13 +61,15 @@ $app->add(new \Zeuxisoo\Whoops\Provider\Slim\WhoopsMiddleware);
 - Opening referenced files with your favorite editor or IDE
 
 ```
-$app->config('whoops.editor', 'sublime');  // add this line
-$app->add(new \Zeuxisoo\Whoops\Provider\Slim\WhoopsMiddleware);
+$app = new App([
+    'debug'         => true,
+    'whoops.editor' => 'sublime' // Support click to open editor
+]);
 ```
 
 ## Important Note
 
-In the version `0.3.0`, the `whoops` library is installed by default base on the [Whoops Framework Integration Document](https://github.com/filp/whoops/blob/master/docs/Framework%20Integration.md#contributing-an-integration-with-a-framework)
+From `0.3.0`, the `whoops` library is installed by default base on the [Whoops Framework Integration Document](https://github.com/filp/whoops/blob/master/docs/Framework%20Integration.md#contributing-an-integration-with-a-framework)
 
 If you are using the version `0.2.0`, you must to install the `whoops` library manually.
 
