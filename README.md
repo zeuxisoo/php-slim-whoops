@@ -12,7 +12,17 @@ curl -sS https://getcomposer.org/installer | php
 
 - Edit composer.json
 
-The latest version
+If you are using the slim framework `3.0.0`, please use the `0.4.0` branch.
+
+```
+{
+	"require": {
+		"zeuxisoo/slim-whoops": "0.4.0.*@dev"
+	}
+}
+```
+
+If you are using the slim framework `2.*`, Please use the `master` branch.
 
 ```
 {
@@ -22,7 +32,7 @@ The latest version
 }
 ```
 
-The older version (without dependency injection support)
+And, the older version (without dependency injection support)
 
 ```
 {
