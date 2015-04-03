@@ -11,7 +11,7 @@ class WhoopsMiddleware {
         $app      = $next;
         $settings = $app['settings'];
 
-        if ($settings['debug'] === true) {
+        if (isset($settings['debug']) === true && $settings['debug'] === true) {
             // Enable PrettyPageHandler with editor options
             $prettyPageHandler = new PrettyPageHandler();
 
