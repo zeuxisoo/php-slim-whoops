@@ -4,7 +4,7 @@
 (function($) {
 
 	$(function() {
-		$.getJSON("index.php").done(function(data) {
+		$.getJSON("index.php").error(function(data) {
 			var show = function(name, message) {
 				var template = Handlebars.compile($("#show-template").html());
 
@@ -14,12 +14,14 @@
 				}));
 			};
 
-			show('Error type ', data.error.type);
-			show('Error message ', data.error.message);
-			show('Error file ', data.error.file);
-			show('Error line ', data.error.line);
+			state = JSON.parse(data.responseText);
 
-			show('all json', JSON.stringify(data));
+			show('Error type ', state.error.type);
+			show('Error message ', state.error.message);
+			show('Error file ', state.error.file);
+			show('Error line ', state.error.line);
+
+			show('all json', JSON.stringify(data.responseText));
 		});
 	});
 
