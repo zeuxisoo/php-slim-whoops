@@ -14,7 +14,8 @@ class MessageTest extends PHPUnit_Framework_TestCase {
 
     public function testLoadNormal() {
         $app = new App();
-        $app['environment'] = function () {
+        $container = $app->getContainer();
+        $container['environment'] = function () {
             return Environment::mock([
                 'SCRIPT_NAME' => '/index.php',
                 'REQUEST_URI' => '/foo',
@@ -42,7 +43,8 @@ class MessageTest extends PHPUnit_Framework_TestCase {
 
     public function testException() {
         $app = new App();
-        $app['environment'] = function () {
+        $container = $app->getContainer();
+        $container['environment'] = function () {
             return Environment::mock([
                 'SCRIPT_NAME' => '/index.php',
                 'REQUEST_URI' => '/foo',
@@ -72,8 +74,8 @@ class MessageTest extends PHPUnit_Framework_TestCase {
             'debug' => true,
             'whoops.editor' => 'sublime',
         ]);
-
-        $app['environment'] = function () {
+        $container = $app->getContainer();
+        $container['environment'] = function () {
             return Environment::mock([
                 'SCRIPT_NAME' => '/index.php',
                 'REQUEST_URI' => '/foo',
@@ -91,7 +93,7 @@ class MessageTest extends PHPUnit_Framework_TestCase {
         $response = $app->run();
 
         // Get added whoops handlers
-        $handlers = $app['whoops']->getHandlers();
+        $handlers = $container['whoops']->getHandlers();
 
         $this->assertEquals(2, count($handlers));
         $this->assertEquals('subl://open?url=file://test_path&line=169', $handlers[0]->getEditorHref('test_path', 169));
