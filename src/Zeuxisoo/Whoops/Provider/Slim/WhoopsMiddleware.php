@@ -4,6 +4,7 @@ namespace Zeuxisoo\Whoops\Provider\Slim;
 use Whoops\Run;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Handler\JsonResponseHandler;
+use Zeuxisoo\Whoops\Provider\Slim\WhoopsErrorHandler;
 
 class WhoopsMiddleware {
 
@@ -48,6 +49,10 @@ class WhoopsMiddleware {
             $whoops->pushHandler($prettyPageHandler);
             $whoops->pushHandler($jsonResponseHandler);
             $whoops->register();
+
+            $container['errorHandler'] = function($c) use ($whoops) {
+                return new WhoopsErrorHandler($whoops);
+            };
 
             //
             $container['whoops'] = $whoops;

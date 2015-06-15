@@ -18,11 +18,12 @@
     "require-dev": {
     	"slim/slim": "dev-develop",
     	"filp/whoops": "1.*",
-        "phpunit/phpunit": "4.5.*"
+        "phpunit/phpunit": "4.5.*",
+        "slim/twig-view": "^1.1"
     },
     "autoload": {
         "psr-0": {
-            "Zeuxisoo\\Whoops\\Provider\\Slim\\WhoopsMiddleware": "src/"
+            "Zeuxisoo\\Whoops\\Provider\\Slim": "src/"
         }
     }
 }

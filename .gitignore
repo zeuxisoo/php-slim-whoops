@@ -2,3 +2,4 @@
 composer.lock
 composer.phar
 tests/_log/
+examples/cache/views/
