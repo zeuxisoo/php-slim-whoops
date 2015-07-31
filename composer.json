@@ -16,7 +16,7 @@
         "filp/whoops": "1.*"
     },
     "require-dev": {
-    	"slim/slim": "dev-develop",
+    	"slim/slim": "3.x-dev",
     	"filp/whoops": "1.*",
         "phpunit/phpunit": "4.5.*",
         "slim/twig-view": "^1.1"
