@@ -1,6 +1,6 @@
 <?php
-use Slim\App;
-use Slim\Http\Environment;
+use \Slim\App;
+use \Slim\Http\Environment;
 use \Slim\Http\Uri;
 use \Slim\Http\Body;
 use \Slim\Http\Headers;
@@ -9,7 +9,7 @@ use \Slim\Http\Response;
 use Zeuxisoo\Whoops\Provider\Slim\WhoopsMiddleware;
 
 class Stackable {
-    use Slim\MiddlewareAware;
+    use \Slim\MiddlewareAwareTrait;
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response) {
         return $res->write('Center');
@@ -57,7 +57,7 @@ class MessageTest extends PHPUnit_Framework_TestCase {
         $app = new App();
         $app->add(new WhoopsMiddleware);
         $app->get('/foo', function ($req, $res) use ($app) {
-            return $app->router->urlFor('index');
+            return $app->router->pathFor('index');
         });
 
         $env = Environment::mock([
