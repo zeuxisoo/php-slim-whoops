@@ -81,8 +81,10 @@ class MessageTest extends PHPUnit_Framework_TestCase {
 
     public function testMiddlewareIsWorkingAndEditorIsSet() {
         $app = new App([
-            'debug' => true,
-            'whoops.editor' => 'sublime',
+            'settings' => [
+                'debug' => true,
+                'whoops.editor' => 'sublime',
+            ]
         ]);
         $container = $app->getContainer();
         $container['environment'] = function () {
