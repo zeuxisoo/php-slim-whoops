@@ -5,8 +5,10 @@ use Slim\App;
 use Zeuxisoo\Whoops\Provider\Slim\WhoopsMiddleware;
 
 $app = new App([
-    'debug'         => true,
-    'whoops.editor' => 'sublime'
+    'settings' => [
+        'debug'         => true,
+        'whoops.editor' => 'sublime'
+    ]
 ]);
 
 $app->add(new WhoopsMiddleware);
