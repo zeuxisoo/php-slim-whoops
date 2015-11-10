@@ -15,7 +15,7 @@ $app->add(new WhoopsMiddleware);
 
 $app->get('/', function() use ($app) {
     // echo "Hello World";
-	$app->router->urlFor('index');  // Throw exception, not defined route named 'index'
+	$app->router->pathFor('index');  // Throw exception, not defined route named 'index'
 });
 
 $app->run();
