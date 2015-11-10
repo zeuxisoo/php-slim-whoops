@@ -12,14 +12,14 @@
             "role": "Developer"
     }],
     "require": {
-        "php": ">=5.4.0",
+        "php": ">=5.5.0",
         "filp/whoops": "1.*"
     },
     "require-dev": {
     	"slim/slim": "3.x-dev",
     	"filp/whoops": "1.*",
-        "phpunit/phpunit": "4.5.*",
-        "slim/twig-view": "^1.1"
+        "phpunit/phpunit": "4.8.*",
+        "slim/twig-view": "2.*"
     },
     "autoload": {
         "psr-0": {
