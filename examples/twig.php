@@ -14,13 +14,16 @@ $app = new App([
 $app->add(new WhoopsMiddleware);
 
 $container = $app->getContainer();
-$container->register(new \Slim\Views\Twig('./views', [
-    'debug' => true,
-    'cache' => './cache/views'
-]));
+$container['view'] = function($c) {
+    $view = new \Slim\Views\Twig('./views', [
+        'debug' => true,
+        'cache' => './cache/views'
+    ]);
 
-$twig = $container->get('view')->getEnvironment();
-$twig->addExtension(new Twig_Extension_Debug());
+    $view->addExtension(new Twig_Extension_Debug());
+
+    return $view;
+};
 
 // Work
 // $app->get('/', function($request, $response, $args) use ($app) {
