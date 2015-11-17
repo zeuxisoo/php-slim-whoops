@@ -50,11 +50,10 @@ class WhoopsMiddleware {
             $whoops->pushHandler($jsonResponseHandler);
             $whoops->register();
 
-            $container['errorHandler'] = function($c) use ($whoops) {
+            $container['errorHandler'] = function() use ($whoops) {
                 return new WhoopsErrorHandler($whoops);
             };
 
-            //
             $container['whoops'] = $whoops;
         }
 
