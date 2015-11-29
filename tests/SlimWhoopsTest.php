@@ -57,7 +57,7 @@ class MessageTest extends PHPUnit_Framework_TestCase {
         $app = new App();
         $app->add(new WhoopsMiddleware);
         $app->get('/foo', function ($req, $res) use ($app) {
-            return $app->router->pathFor('index');
+            return $this->router->pathFor('index');
         });
 
         $env = Environment::mock([
