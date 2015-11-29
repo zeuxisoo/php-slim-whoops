@@ -13,9 +13,14 @@ $app = new App([
 
 $app->add(new WhoopsMiddleware);
 
-$app->get('/', function() use ($app) {
-    // echo "Hello World";
-	$app->router->pathFor('index');  // Throw exception, not defined route named 'index'
+// Throw exception, Named route does not exist for name: hello
+$app->get('/', function($request, $response, $args) {
+	return $this->router->pathFor('hello');
 });
+
+// $app->get('/hello', function($request, $response, $args) {
+//     $response->write("Hello Slim");
+//     return $response;
+// })->setName('hello');
 
 $app->run();
