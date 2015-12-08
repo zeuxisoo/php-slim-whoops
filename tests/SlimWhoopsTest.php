@@ -1,5 +1,20 @@
 <?php
+use \Slim\App;
+use \Slim\Http\Environment;
+use \Slim\Http\Uri;
+use \Slim\Http\Body;
+use \Slim\Http\Headers;
+use \Slim\Http\Request;
+use \Slim\Http\Response;
 use Zeuxisoo\Whoops\Provider\Slim\WhoopsMiddleware;
+
+class Stackable {
+    use \Slim\MiddlewareAwareTrait;
+
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response) {
+        return $res->write('Center');
+    }
+}
 
 class MessageTest extends PHPUnit_Framework_TestCase {
     public function setUp() {
@@ -11,62 +26,88 @@ class MessageTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testLoadNormal() {
-        \Slim\Environment::mock(array(
-            'SCRIPT_NAME' => '/index.php',
-            'PATH_INFO' => '/foo'
-        ));
-
-        $app = new \Slim\Slim();
-        $app->get('/foo', function () {
-            echo "It is work";
+        $app = new App();
+        $app->add(new WhoopsMiddleware);
+        $app->get('/foo', function ($req, $res) {
+            $res->write('It is work');
+            return $res;
         });
 
-        $middleware = new WhoopsMiddleware();
-        $middleware->setApplication($app);
-        $middleware->setNextMiddleware($app);
-        $middleware->call();
+        $env = Environment::mock([
+            'SCRIPT_NAME' => '/index.php',
+            'REQUEST_URI' => '/foo',
+            'REQUEST_METHOD' => 'GET',
+        ]);
 
-        $this->assertEquals("It is work", $app->response()->body());
-        $this->assertEquals(200, $app->response()->status());
+        $uri          = Uri::createFromEnvironment($env);
+        $headers      = Headers::createFromEnvironment($env);
+        $cookies      = [];
+        $serverParams = $env->all();
+        $body         = new Body(fopen('php://temp', 'r+'));
+        $req          = new Request('GET', $uri, $headers, $cookies, $serverParams, $body);
+        $res          = new Response();
+
+        $resOut = $app($req, $res);
+
+        $this->assertInstanceOf('\Psr\Http\Message\ResponseInterface', $resOut);
+        $this->assertEquals('It is work', (string)$res->getBody());
     }
 
     public function testException() {
-        \Slim\Environment::mock(array(
-            'SCRIPT_NAME' => '/index.php',
-            'PATH_INFO' => '/foo'
-        ));
-
-        $app = new \Slim\Slim();
-        $app->get('/foo', function () {
-            throw new \Exception('Test Message', 100);
+        $app = new App();
+        $app->add(new WhoopsMiddleware);
+        $app->get('/foo', function ($req, $res) use ($app) {
+            return $this->router->pathFor('index');
         });
 
-        $middleware = new WhoopsMiddleware();
-        $middleware->setApplication($app);
-        $middleware->setNextMiddleware($app);
-        $middleware->call();
+        $env = Environment::mock([
+            'SCRIPT_NAME' => '/index.php',
+            'REQUEST_URI' => '/foo',
+            'REQUEST_METHOD' => 'GET',
+        ]);
 
-        $this->assertEmpty($app->response()->body());
-        $this->assertEquals(500, $app->response()->status());
+        $uri          = Uri::createFromEnvironment($env);
+        $headers      = Headers::createFromEnvironment($env);
+        $cookies      = [];
+        $serverParams = $env->all();
+        $body         = new Body(fopen('php://temp', 'r+'));
+        $req          = new Request('GET', $uri, $headers, $cookies, $serverParams, $body);
+        $res          = new Response();
+
+        $this->setExpectedException('\RuntimeException');
+
+        $app($req, $res);
     }
 
-    public function testSetEditor() {
-        \Slim\Environment::mock(array(
-            'SCRIPT_NAME' => '/index.php',
-            'PATH_INFO' => '/foo'
-        ));
+    public function testMiddlewareIsWorkingAndEditorIsSet() {
+        $app = new App([
+            'settings' => [
+                'debug' => true,
+                'whoops.editor' => 'sublime',
+            ]
+        ]);
+        $container = $app->getContainer();
+        $container['environment'] = function () {
+            return Environment::mock([
+                'SCRIPT_NAME' => '/index.php',
+                'REQUEST_URI' => '/foo',
+                'REQUEST_METHOD' => 'GET'
+            ]);
+        };
 
-        $app = new \Slim\Slim();
-        $app->config('whoops.editor', 'sublime');
-        $app->get('/foo', function () {
-            echo "It is work";
+        $app->get('/foo', function ($req, $res, $args) {
+            return $res;
         });
 
-        $middleware = new WhoopsMiddleware();
-        $middleware->setApplication($app);
-        $middleware->setNextMiddleware($app);
-        $middleware->call();
+        $app->add(new WhoopsMiddleware);
 
-        $this->assertEquals('subl://open?url=file://test_path&line=168', $app->whoopsPrettyPageHandler->getEditorHref('test_path', 168));
+        // Invoke app
+        $response = $app->run();
+
+        // Get added whoops handlers
+        $handlers = $container['whoops']->getHandlers();
+
+        $this->assertEquals(2, count($handlers));
+        $this->assertEquals('subl://open?url=file://test_path&line=169', $handlers[0]->getEditorHref('test_path', 169));
     }
 }

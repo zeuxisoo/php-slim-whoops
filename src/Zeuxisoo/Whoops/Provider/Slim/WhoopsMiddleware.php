@@ -1,89 +1,65 @@
 <?php
 namespace Zeuxisoo\Whoops\Provider\Slim;
 
-use \Slim\Middleware;
-
 use Whoops\Run;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Handler\JsonResponseHandler;
+use Zeuxisoo\Whoops\Provider\Slim\WhoopsErrorHandler;
 
-class WhoopsMiddleware extends Middleware {
-    public function call() {
-        $app = $this->app;
+class WhoopsMiddleware {
 
-        if ($app->config('debug') === true) {
-            // Switch to custom error handler by disable debug
-            $app->config('debug', false);
+    public function __invoke($request, $response, $next) {
+        $app         = $next;
+        $container   = $app->getContainer();
+        $settings    = $container['settings'];
+        $environment = $container['environment'];
+        $request     = $container['request'];
 
-            //
-            $app->container->singleton('whoopsPrettyPageHandler', function() {
-                return new PrettyPageHandler();
-            });
+        if (isset($settings['debug']) === true && $settings['debug'] === true) {
+            // Enable PrettyPageHandler with editor options
+            $prettyPageHandler = new PrettyPageHandler();
 
-            $app->container->singleton('whoopsJsonResponseHandler', function() {
-                $handler = new JsonResponseHandler();
-                $handler->onlyForAjaxRequests(true);
-
-                return $handler;
-            });
-
-            $app->whoopsSlimInfoHandler = $app->container->protect(function() use ($app) {
-                try {
-                    $request = $app->request();
-                } catch (RuntimeException $e) {
-                    return;
-                }
-
-                $current_route = $app->router()->getCurrentRoute();
-                $route_details = array();
-
-                if ($current_route !== null) {
-                    $route_details = array(
-                        'Route Name'       => $current_route->getName() ?: '<none>',
-                        'Route Pattern'    => $current_route->getPattern() ?: '<none>',
-                        'Route Middleware' => $current_route->getMiddleware() ?: '<none>',
-                    );
-                }
-
-                $app->whoopsPrettyPageHandler->addDataTable('Slim Application', array_merge(array(
-                    'Charset'          => $request->headers('ACCEPT_CHARSET'),
-                    'Locale'           => $request->getContentCharset() ?: '<none>',
-                    'Application Class'=> get_class($app)
-                ), $route_details));
-
-                $app->whoopsPrettyPageHandler->addDataTable('Slim Application (Request)', array(
-                    'URI'         => $request->getRootUri(),
-                    'Request URI' => $request->getResourceUri(),
-                    'Path'        => $request->getPath(),
-                    'Query String'=> $request->params() ?: '<none>',
-                    'HTTP Method' => $request->getMethod(),
-                    'Script Name' => $request->getScriptName(),
-                    'Base URL'    => $request->getUrl(),
-                    'Scheme'      => $request->getScheme(),
-                    'Port'        => $request->getPort(),
-                    'Host'        => $request->getHost(),
-                ));
-            });
-
-            // Open with editor if editor is set
-            $whoops_editor = $app->config('whoops.editor');
-
-            if ($whoops_editor !== null) {
-                $app->whoopsPrettyPageHandler->setEditor($whoops_editor);
+            if (empty($settings['whoops.editor']) === false) {
+                $prettyPageHandler->setEditor($settings['whoops.editor']);
             }
 
-            $app->container->singleton('whoops', function() use ($app) {
-                $run = new Run();
-                $run->pushHandler($app->whoopsPrettyPageHandler);
-                $run->pushHandler($app->whoopsJsonResponseHandler);
-                $run->pushHandler($app->whoopsSlimInfoHandler);
+            // Enable JsonResponseHandler when request is AJAX
+            $jsonResponseHandler = new JsonResponseHandler();
+            $jsonResponseHandler->onlyForAjaxRequests(true);
 
-                return $run;
-            });
+            // Add more information to the PrettyPageHandler
+            $prettyPageHandler->addDataTable('Slim Application', [
+                'Application Class' => get_class($app),
+                'Script Name'       => $environment->get('SCRIPT_NAME'),
+                'Request URI'       => $environment->get('PATH_INFO') ?: '<none>',
+            ]);
 
-            $app->error(array($app->whoops, Run::EXCEPTION_HANDLER));
+            $prettyPageHandler->addDataTable('Slim Application (Request)', array(
+                'Accept Charset'  => $request->getHeader('ACCEPT_CHARSET') ?: '<none>',
+                'Content Charset' => $request->getContentCharset() ?: '<none>',
+                'Path'            => $request->getUri()->getPath(),
+                'Query String'    => $request->getUri()->getQuery() ?: '<none>',
+                'HTTP Method'     => $request->getMethod(),
+                'Base URL'        => (string) $request->getUri(),
+                'Scheme'          => $request->getUri()->getScheme(),
+                'Port'            => $request->getUri()->getPort(),
+                'Host'            => $request->getUri()->getHost(),
+            ));
+
+            // Set Whoops to default exception handler
+            $whoops = new \Whoops\Run;
+            $whoops->pushHandler($prettyPageHandler);
+            $whoops->pushHandler($jsonResponseHandler);
+            $whoops->register();
+
+            $container['errorHandler'] = function() use ($whoops) {
+                return new WhoopsErrorHandler($whoops);
+            };
+
+            $container['whoops'] = $whoops;
         }
 
-        $this->next->call();
+        return $app($request, $response);
     }
+
 }
