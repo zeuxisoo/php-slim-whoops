@@ -63,8 +63,10 @@ $app->add(new \Zeuxisoo\Whoops\Provider\Slim\WhoopsMiddleware);
 
 ```
 $app = new App([
-    'debug'         => true,
-    'whoops.editor' => 'sublime' // Support click to open editor
+    'settings' => [
+        'debug'         => true,
+        'whoops.editor' => 'sublime' // Support click to open editor
+    ]
 ]);
 ```
 
