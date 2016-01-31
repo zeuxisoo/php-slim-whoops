@@ -107,7 +107,8 @@ class MessageTest extends PHPUnit_Framework_TestCase {
         // Get added whoops handlers
         $handlers = $container['whoops']->getHandlers();
 
-        $this->assertEquals(2, count($handlers));
+        // Only 1 will got because the JSON handler will not added if it is not ajax request
+        $this->assertEquals(1, count($handlers));
         $this->assertEquals('subl://open?url=file://test_path&line=169', $handlers[0]->getEditorHref('test_path', 169));
     }
 }
