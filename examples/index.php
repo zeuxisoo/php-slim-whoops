@@ -6,12 +6,31 @@ use Zeuxisoo\Whoops\Provider\Slim\WhoopsMiddleware;
 
 $app = new App([
     'settings' => [
-        'debug'         => true,
-        'whoops.editor' => 'sublime'
+        'debug'               => true,      // On/Off whoops error
+        'whoops.editor'       => 'sublime',
+        'displayErrorDetails' => true,      // Display call stack in orignal slim error when debug is off
     ]
 ]);
 
-$app->add(new WhoopsMiddleware);
+if ($app->getContainer()->settings['debug'] === false) {
+    $container['errorHandler'] = function ($c) {
+        return function ($request, $response, $exception) use ($c) {
+            $data = [
+                'code' => $exception->getCode(),
+                'message' => $exception->getMessage(),
+                'file' => $exception->getFile(),
+                'line' => $exception->getLine(),
+                'trace' => explode("\n", $exception->getTraceAsString()),
+            ];
+
+            return $c->get('response')->withStatus(500)
+                    ->withHeader('Content-Type', 'application/json')
+                    ->write(json_encode($data));
+        };
+    };
+}else{
+    $app->add(new WhoopsMiddleware);
+}
 
 // Throw exception, Named route does not exist for name: hello
 $app->get('/', function($request, $response, $args) {
