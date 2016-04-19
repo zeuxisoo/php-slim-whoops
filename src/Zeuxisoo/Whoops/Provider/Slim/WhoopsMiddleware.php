@@ -13,7 +13,6 @@ class WhoopsMiddleware {
         $container   = $app->getContainer();
         $settings    = $container['settings'];
         $environment = $container['environment'];
-        $request     = $container['request'];
 
         if (isset($settings['debug']) === true && $settings['debug'] === true) {
             // Enable PrettyPageHandler with editor options
