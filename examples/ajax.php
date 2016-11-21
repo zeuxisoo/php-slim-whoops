@@ -29,7 +29,6 @@
 </script>
 <script id="show-template" type="text/x-handlebars-template">
 	<p>
-		<strong>{{ name }}</strong> =
-		{{ message }}
+		<strong>{{ name }}</strong> = {{ message }}
 	</p>
 </script>
