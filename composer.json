@@ -13,12 +13,12 @@
     }],
     "require": {
         "php": ">=5.5.0",
-        "filp/whoops": "2.*"
+        "filp/whoops": "2.1.*"
     },
     "require-dev": {
-    	"slim/slim": "3.3.*",
-        "phpunit/phpunit": "4.8.*",
-        "slim/twig-view": "2.*"
+    	"slim/slim": "3.6.*",
+        "phpunit/phpunit": "5.6.*",
+        "slim/twig-view": "2.1.*"
     },
     "autoload": {
         "psr-0": {
