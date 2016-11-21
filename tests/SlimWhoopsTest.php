@@ -27,7 +27,7 @@ class MessageTest extends PHPUnit_Framework_TestCase {
 
     public function testLoadNormal() {
         $app = new App();
-        $app->add(new WhoopsMiddleware);
+        $app->add(new WhoopsMiddleware($app->getContainer()));
         $app->get('/foo', function ($req, $res) {
             $res->write('It is work');
             return $res;
@@ -53,9 +53,43 @@ class MessageTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals('It is work', (string)$res->getBody());
     }
 
+    public function testInstantiationAsString(){
+
+        $env = Environment::mock([
+            'SCRIPT_NAME' => '/index.php',
+            'REQUEST_URI' => '/foo',
+            'REQUEST_METHOD' => 'GET',
+        ]);
+
+        $uri          = Uri::createFromEnvironment($env);
+        $headers      = Headers::createFromEnvironment($env);
+        $cookies      = [];
+        $serverParams = $env->all();
+        $body         = new Body(fopen('php://temp', 'r+'));
+        $req          = new Request('GET', $uri, $headers, $cookies, $serverParams, $body);
+        $res          = new Response();
+        $app          = new App;
+
+        $next = function($req, $res){
+            return $res;
+        };
+
+        $mw1 = function($req, $res, $next) {
+            return $req->withAttribute('some_attribute', 'some_value');
+        };
+
+        // This is how Slim resolves a class name when registering a middleware
+        $mw2 = $app->getContainer()->get('callableResolver')->resolve('Zeuxisoo\Whoops\Provider\Slim\WhoopsMiddleware');
+        $this->assertInstanceOf('Zeuxisoo\Whoops\Provider\Slim\WhoopsMiddleware', $mw2);
+
+        $response1 = $mw1($req, $res, $mw2);
+        $this->assertEquals( $response1->getAttribute('some_attribute'), 'some_value' );
+
+    }
+
     public function testException() {
         $app = new App();
-        $app->add(new WhoopsMiddleware);
+        $app->add(new WhoopsMiddleware($app->getContainer()));
         $app->get('/foo', function ($req, $res) use ($app) {
             return $this->router->pathFor('index');
         });
@@ -99,7 +133,7 @@ class MessageTest extends PHPUnit_Framework_TestCase {
             return $res;
         });
 
-        $app->add(new WhoopsMiddleware);
+        $app->add(new WhoopsMiddleware($container));
 
         // Invoke app
         $response = $app->run();
