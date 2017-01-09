@@ -8,7 +8,7 @@ use \Slim\Http\Request;
 use \Slim\Http\Response;
 use Zeuxisoo\Whoops\Provider\Slim\WhoopsMiddleware;
 
-class SlimWhoopsTest extends PHPUnit_Framework_TestCase {
+class SlimWhoopsDICompatibilityTest extends PHPUnit_Framework_TestCase {
 
     public function setUp() {
         ob_start();
@@ -18,9 +18,9 @@ class SlimWhoopsTest extends PHPUnit_Framework_TestCase {
         ob_end_clean();
     }
 
-    public function testLoadNormal() {
+    public function testLoadNormalDICompatibility() {
         $app = new App();
-        $app->add(new WhoopsMiddleware);
+        $app->add(new WhoopsMiddleware($app));
         $app->get('/foo', function ($req, $res) {
             $res->write('It is work');
             return $res;
@@ -46,9 +46,9 @@ class SlimWhoopsTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals('It is work', (string)$res->getBody());
     }
 
-    public function testException() {
+    public function testExceptionDICompatibility() {
         $app = new App();
-        $app->add(new WhoopsMiddleware);
+        $app->add(new WhoopsMiddleware($app));
         $app->get('/foo', function ($req, $res) use ($app) {
             return $this->router->pathFor('index');
         });
@@ -72,7 +72,7 @@ class SlimWhoopsTest extends PHPUnit_Framework_TestCase {
         $app($req, $res);
     }
 
-    public function testMiddlewareIsWorkingAndEditorIsSet() {
+    public function testMiddlewareIsWorkingAndEditorIsSetDICompatibility() {
         $app = new App([
             'settings' => [
                 'debug' => true,
@@ -92,7 +92,7 @@ class SlimWhoopsTest extends PHPUnit_Framework_TestCase {
             return $res;
         });
 
-        $app->add(new WhoopsMiddleware);
+        $app->add(new WhoopsMiddleware($app));
 
         // Invoke app
         $response = $app->run();
