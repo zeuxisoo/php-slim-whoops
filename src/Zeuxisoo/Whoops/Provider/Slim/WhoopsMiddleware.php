@@ -8,8 +8,16 @@ use Zeuxisoo\Whoops\Provider\Slim\WhoopsErrorHandler;
 
 class WhoopsMiddleware {
 
+    private $app = null;
+
+    public function __construct($app = "") {
+        if (empty($app) === false) {
+            $this->app = $app;
+        }
+    }
+
     public function __invoke($request, $response, $next) {
-        $app         = $next;
+        $app         = $this->app ?? $next;
         $container   = $app->getContainer();
         $settings    = $container['settings'];
         $environment = $container['environment'];
