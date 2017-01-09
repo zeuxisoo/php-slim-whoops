@@ -80,10 +80,11 @@ Version `0.2.0`
 
 ## Testing
 
-- Run the test cases
+Run the test cases
 
-```
-php vendor/bin/phpunit
-```
+	php vendor/bin/phpunit
+	
+	
+
 
 [1]: https://github.com/filp/whoops/blob/master/docs/Framework%20Integration.md#contributing-an-integration-with-a-framework	"Whoops Framework Integration Document"
