@@ -17,7 +17,7 @@ class WhoopsMiddleware {
     }
 
     public function __invoke($request, $response, $next) {
-        $app         = $this->app ?? $next;
+        $app         = $this->app !== null ? $this->app : $next;
         $container   = $app->getContainer();
         $settings    = $container['settings'];
         $environment = $container['environment'];
