@@ -1,80 +1,82 @@
+# Slim whoops
+
+PHP whoops error on slim framework
+
 ## Status
 
 [![Build Status](https://travis-ci.org/zeuxisoo/php-slim-whoops.png?branch=master)](https://travis-ci.org/zeuxisoo/php-slim-whoops)
 
-## Installing
+## Installation
 
-- Install the composer
+Install the composer
 
-```
-curl -sS https://getcomposer.org/installer | php
-```
+    curl -sS https://getcomposer.org/installer | php
 
-- Edit composer.json
+Edit `composer.json`
 
-For Slim framework 3, Pease use the `0.4.0` or `0.5.0`
+| Slim | Whoops    | Middleware |
+| ---- | --------- | ---------- |
+|   1  |  n/a      | 0.1.*      |
+|   2  |  1.*      | 0.3.*      |
+|   3  |  <= 1.*   | 0.4.*      |
+|   3  |  >= 2.*   | 0.5.*      |
 
-```
-{
-	"require": {
-		"zeuxisoo/slim-whoops": "0.4.*" // for whoops <= 1.*
-        "zeuxisoo/slim-whoops": "0.5.*" // for whoops >= 2.*
+For `Slim framework 3`, The `composer.json` will looks like
+
+	{
+		"require": {
+	        "zeuxisoo/slim-whoops": "0.5.*"
+		}
 	}
-}
-```
 
-For Slim framework 2, Please use the `0.3.0`.
+Now, `install` or `update` the dependencies
 
-```
-{
-    "require": {
-        "zeuxisoo/slim-whoops": "0.3.*"
-    }
-}
-```
-
-Older version (without dependency injection support)
-
-```
-{
-    "require": {
-        "zeuxisoo/slim-whoops": "0.1.*"
-    }
-}
-```
-
-- Install/update your dependencies
-
-```
-php composer.phar install
-```
+	php composer.phar install
 
 ## Usage
 
-- add the middleware into slim application
+Just need to add the middleware in your slim application.
 
-```
-$app->add(new \Zeuxisoo\Whoops\Provider\Slim\WhoopsMiddleware);
-```
+**Simple way**
+
+In this case, You **must** ensure this line is first added and on top of other middlewares
+
+	$app->add(new \Zeuxisoo\Whoops\Provider\Slim\WhoopsMiddleware);
+	$app->add(new \Other\MiddlewareA);
+	$app->add(new \Other\MiddlewareB);
+	
+**Better DI**
+
+In this case, You can place this line anywhere no position required
+
+	$app->add(new \Zeuxisoo\Whoops\Provider\Slim\WhoopsMiddleware($app));
 
 ## Options
 
-- Opening referenced files with your favorite editor or IDE
+Opening referenced files with your favorite editor or IDE
 
-```
-$app = new App([
-    'settings' => [
-        'debug'         => true,
-        'whoops.editor' => 'sublime' // Support click to open editor
-    ]
-]);
-```
+	$app = new App([
+	    'settings' => [
+	    	 // Enable whoops
+	        'debug'         => true,
+	        
+	        // Support click to open editor
+	        'whoops.editor' => 'sublime',
+	        
+	        // Display call stack in orignal slim error when debug is off 
+	        'displayErrorDetails' => true,
+	    ]
+	]);
 
 ## Important Note
 
-From `0.3.0`, the `whoops` library is installed by default base on the [Whoops Framework Integration Document](https://github.com/filp/whoops/blob/master/docs/Framework%20Integration.md#contributing-an-integration-with-a-framework)
+Version `0.3.0`
 
-If you are using the version `0.2.0`, you must to install the `whoops` library manually.
+- The `whoops` library is installed by default base on the [Whoops Framework Integration Document][1]
+
+Version `0.2.0`
+
+- You must to install the `whoops` library manually.
 
 ## Testing
 
@@ -83,3 +85,5 @@ If you are using the version `0.2.0`, you must to install the `whoops` library m
 ```
 php vendor/bin/phpunit
 ```
+
+[1]: https://github.com/filp/whoops/blob/master/docs/Framework%20Integration.md#contributing-an-integration-with-a-framework	"Whoops Framework Integration Document"
