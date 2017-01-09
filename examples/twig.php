@@ -11,7 +11,7 @@ $app = new App([
     ]
 ]);
 
-$app->add(new WhoopsMiddleware);
+$app->add(new WhoopsMiddleware($app));
 
 $container = $app->getContainer();
 $container['view'] = function($c) {

@@ -30,7 +30,7 @@ if ($app->getContainer()->settings['debug'] === false) {
         };
     };
 }else{
-    $app->add(new WhoopsMiddleware);
+    $app->add(new WhoopsMiddleware($app));
 }
 
 // Throw exception, Named route does not exist for name: hello
