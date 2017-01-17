@@ -70,11 +70,7 @@ class WhoopsMiddleware {
 
             $whoops->register();
 
-            $container['errorHandler'] = function() use ($whoops) {
-                return new WhoopsErrorHandler($whoops);
-            };
-
-            $container['phpErrorHandler'] = function() use ($whoops) {
+            $container['phpErrorHandler'] = $container['errorHandler'] = function() use ($whoops) {
                 return new WhoopsErrorHandler($whoops);
             };
 
