@@ -1,71 +1,78 @@
-<?php
-require_once dirname(dirname(__FILE__)).'/vendor/autoload.php';
-
-use Slim\App;
-use Zeuxisoo\Whoops\Provider\Slim\WhoopsMiddleware;
-
-$app = new App([
-    'settings' => [
-        // On/Off whoops error
-        'debug'               => true,
-
-        // Set default whoops editor
-        'whoops.editor'       => 'sublime',
-
-        // Display call stack in orignal slim error when debug is off
-        'displayErrorDetails' => true,
-    ]
-]);
-
-if ($app->getContainer()->settings['debug'] === false) {
-    // Custom error handler for slim application when debug is off
-    $container['errorHandler'] = function($c) {
-        return function($request, $response, $exception) use ($c) {
-            $data = [
-                'code'    => $exception->getCode(),
-                'message' => $exception->getMessage(),
-                'file'    => $exception->getFile(),
-                'line'    => $exception->getLine(),
-                'trace'   => explode("\n", $exception->getTraceAsString()),
-            ];
-
-            return $c->get('response')
-                    ->withStatus(500)
-                    ->withHeader('Content-Type', 'application/json')
-                    ->write(json_encode($data));
-        };
-    };
-}else{
-    // Custom whoops handler and replace the default error handler to whoops
-    /*
-    $simplyErrorHandler = function($exception, $inspector, $run) {
-        $message = $exception->getMessage();
-        $title   =  $inspector->getExceptionName();
-
-        echo "{$title} -> {$message}";
-
-        exit;
-    };
-
-    $customWhoopsHandlers = [$simplyErrorHandler];
-
-    $app->add(new WhoopsMiddleware($app, $customWhoopsHandlers));
-    */
-
-    $app->add(new WhoopsMiddleware($app));
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Slim Whoops Examples</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+<style type="text/css">
+.part {
+    margin-top: 20px;
+    margin-bottom: 30px;
 }
+</style>
+<body>
+<div class="container">
+    <h3>Examples</h3>
+    <hr>
 
-// Throw exception, Named route does not exist for name: hello
-$app->get('/', function($request, $response, $args) {
-	return $this->router->pathFor('hello');
-});
+    <div class="part">
+        <h5>Base usage</h5>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th width="30%">File</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <a href="./simple-mode.php">simple-mode.php</a>
+                    </td>
+                    <td>middleware usage</td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="./global-mode.php">global-mode.php</a>
+                    </td>
+                    <td>Individual usage</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
-// Working example
-/*
-$app->get('/hello', function($request, $response, $args) {
-    $response->write("Hello Slim");
-    return $response;
-})->setName('hello');
-*/
-
-$app->run();
+    <div class="part">
+        <h5>Other sample</h5>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th width="30%">File</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <a href="./twig-exception.php">twig-exception.php</a>
+                    </td>
+                    <td>Raise exception when twig template not exists</td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="./ajax-json-handler.php">ajax-json-handler.php</a>
+                    </td>
+                    <td>Auto response json message when request is ajax</td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="./custom-whoops-handler.php">custom-whoops-handler.php</a>
+                    </td>
+                    <td>Custom whoops handler</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

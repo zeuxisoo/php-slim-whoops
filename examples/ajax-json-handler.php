@@ -4,7 +4,7 @@
 (function($) {
 
 	$(function() {
-		$.getJSON("index.php").error(function(data) {
+		$.getJSON("./simple-mode.php").error(function(data) {
 			var show = function(name, message) {
 				var template = Handlebars.compile($("#show-template").html());
 
