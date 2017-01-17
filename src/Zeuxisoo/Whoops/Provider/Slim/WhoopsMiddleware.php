@@ -11,12 +11,12 @@ use Zeuxisoo\Whoops\Provider\Slim\WhoopsErrorHandler;
 
 class WhoopsMiddleware {
 
-    private $app = null;
+    private $app      = null;
+    private $handlers = [];
 
-    public function __construct(SlimApp $app = null) {
-        if ($app !== null) {
-            $this->app = $app;
-        }
+    public function __construct(SlimApp $app = null, array $handlers = []) {
+        $this->app      = $app;
+        $this->handlers = $handlers;
     }
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next) {
@@ -59,6 +59,13 @@ class WhoopsMiddleware {
             // Enable JsonResponseHandler when request is AJAX
             if (Misc::isAjaxRequest()){
                 $whoops->pushHandler(new JsonResponseHandler());
+            }
+
+            // Add each custom handler to whoops handler stack
+            if (empty($this->handlers) === false) {
+                foreach($this->handlers as $handler) {
+                    $whoops->pushHandler($handler);
+                }
             }
 
             $whoops->register();

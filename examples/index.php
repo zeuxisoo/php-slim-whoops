@@ -6,13 +6,19 @@ use Zeuxisoo\Whoops\Provider\Slim\WhoopsMiddleware;
 
 $app = new App([
     'settings' => [
-        'debug'               => true,      // On/Off whoops error
+        // On/Off whoops error
+        'debug'               => true,
+
+        // Set default whoops editor
         'whoops.editor'       => 'sublime',
-        'displayErrorDetails' => true,      // Display call stack in orignal slim error when debug is off
+
+        // Display call stack in orignal slim error when debug is off
+        'displayErrorDetails' => true,
     ]
 ]);
 
 if ($app->getContainer()->settings['debug'] === false) {
+    // Custom error handler for slim application when debug is off
     $container['errorHandler'] = function($c) {
         return function($request, $response, $exception) use ($c) {
             $data = [
@@ -30,6 +36,22 @@ if ($app->getContainer()->settings['debug'] === false) {
         };
     };
 }else{
+    // Custom whoops handler and replace the default error handler to whoops
+    /*
+    $simplyErrorHandler = function($exception, $inspector, $run) {
+        $message = $exception->getMessage();
+        $title   =  $inspector->getExceptionName();
+
+        echo "{$title} -> {$message}";
+
+        exit;
+    };
+
+    $customWhoopsHandlers = [$simplyErrorHandler];
+
+    $app->add(new WhoopsMiddleware($app, $customWhoopsHandlers));
+    */
+
     $app->add(new WhoopsMiddleware($app));
 }
 
@@ -38,9 +60,12 @@ $app->get('/', function($request, $response, $args) {
 	return $this->router->pathFor('hello');
 });
 
-// $app->get('/hello', function($request, $response, $args) {
-//     $response->write("Hello Slim");
-//     return $response;
-// })->setName('hello');
+// Working example
+/*
+$app->get('/hello', function($request, $response, $args) {
+    $response->write("Hello Slim");
+    return $response;
+})->setName('hello');
+*/
 
 $app->run();
