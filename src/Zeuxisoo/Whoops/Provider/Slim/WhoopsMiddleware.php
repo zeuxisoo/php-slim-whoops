@@ -1,22 +1,25 @@
 <?php
 namespace Zeuxisoo\Whoops\Provider\Slim;
 
+use Slim\App as SlimApp;
 use Whoops\Util\Misc;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Handler\JsonResponseHandler;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface;
 use Zeuxisoo\Whoops\Provider\Slim\WhoopsErrorHandler;
 
 class WhoopsMiddleware {
 
     private $app = null;
 
-    public function __construct($app = "") {
-        if (empty($app) === false) {
+    public function __construct(SlimApp $app = null) {
+        if ($app !== null) {
             $this->app = $app;
         }
     }
 
-    public function __invoke($request, $response, $next) {
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next) {
         $app         = $this->app !== null ? $this->app : $next;
         $container   = $app->getContainer();
         $settings    = $container['settings'];
@@ -61,6 +64,10 @@ class WhoopsMiddleware {
             $whoops->register();
 
             $container['errorHandler'] = function() use ($whoops) {
+                return new WhoopsErrorHandler($whoops);
+            };
+
+            $container['phpErrorHandler'] = function() use ($whoops) {
                 return new WhoopsErrorHandler($whoops);
             };
 
