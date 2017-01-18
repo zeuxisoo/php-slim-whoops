@@ -14,12 +14,13 @@ Install the composer
 
 Edit `composer.json`
 
-| Slim | Whoops    | Middleware |
-| ---- | --------- | ---------- |
-|   1  |  n/a      | 0.1.*      |
-|   2  |  1.*      | 0.3.*      |
-|   3  |  <= 1.*   | 0.4.*      |
-|   3  |  >= 2.*   | 0.5.*      |
+| Slim | Whoops    | Middleware | Global Mode |
+| ---- | --------- | ---------- | ----------- |
+|   1  |  n/a      | 0.1.*      | no          |
+|   2  |  1.*      | 0.3.*      | no          |
+|   3  |  <= 1.*   | 0.4.*      | no          |
+|   3  |  >= 2.*   | 0.5.*      | no          |
+|   3  |  >= 2.*   | 0.6.*      | yes         |
 
 For `Slim framework 3`, The `composer.json` will looks like
 
@@ -44,13 +45,13 @@ In this case, You **must** ensure this line is first added and on top of other m
 	$app->add(new \Zeuxisoo\Whoops\Provider\Slim\WhoopsMiddleware);
 	$app->add(new \Other\MiddlewareA);
 	$app->add(new \Other\MiddlewareB);
-	
+
 **Better DI**
 
 In this case, You can place this line anywhere no position required
 
 	$app->add(new \Zeuxisoo\Whoops\Provider\Slim\WhoopsMiddleware($app));
-	
+
 **Global mode**
 
 In this case, The following code can make Whoops errors in the global scope, whether you have destroyed the program's life cycle
@@ -60,7 +61,7 @@ In this case, The following code can make Whoops errors in the global scope, whe
 	$whoopsGuard->setRequest($container['request']);
 	$whoopsGuard->setHandlers([]);
 	$whoopsGuard->install();
-	
+
 **Custom Whoops Handler**
 
 In this case, You can push custom handler to whoops. For example:
@@ -70,7 +71,7 @@ A handler like:
 	$simplyErrorHandler = function($exception, $inspector, $run) {
 	    $message = $exception->getMessage();
 	    $title   =  $inspector->getExceptionName();
-	
+
 	    echo "{$title} -> {$message}";
 	    exit;
 	};
@@ -78,9 +79,9 @@ A handler like:
 Middleware case like:
 
 	new \Zeuxisoo\Whoops\Provider\Slim\WhoopsMiddleware($app, [$simplyErrorHandler]);
-	
+
 Global mode case like:
-	
+
 	$whoopsGuard = new \Zeuxisoo\Whoops\Provider\Slim\WhoopsGuard();
 	$whoopsGuard->setHandlers([$simplyErrorHandler]);
 
@@ -92,11 +93,11 @@ Opening referenced files with your favorite editor or IDE
 	    'settings' => [
 	    	 // Enable whoops
 	        'debug'         => true,
-	        
+
 	        // Support click to open editor
 	        'whoops.editor' => 'sublime',
-	        
-	        // Display call stack in orignal slim error when debug is off 
+
+	        // Display call stack in orignal slim error when debug is off
 	        'displayErrorDetails' => true,
 	    ]
 	]);
@@ -116,8 +117,8 @@ Version `0.2.0`
 Run the test cases
 
 	php vendor/bin/phpunit
-	
-	
+
+
 
 
 [1]: https://github.com/filp/whoops/blob/master/docs/Framework%20Integration.md#contributing-an-integration-with-a-framework	"Whoops Framework Integration Document"
