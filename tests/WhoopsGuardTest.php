@@ -1,26 +1,35 @@
 <?php
-use \Slim\App;
-use \Slim\Http\Environment;
-use \Slim\Http\Uri;
-use \Slim\Http\Body;
-use \Slim\Http\Headers;
-use \Slim\Http\Request;
-use \Slim\Http\Response;
-use Zeuxisoo\Whoops\Provider\Slim\WhoopsMiddleware;
+use Slim\App;
+use Slim\Http\Environment;
+use Slim\Http\Uri;
+use Slim\Http\Body;
+use Slim\Http\Headers;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
-class SlimWhoopsTest extends PHPUnit_Framework_TestCase {
+use Zeuxisoo\Whoops\Provider\Slim\WhoopsGuard;
+
+class WhoopsGuardTest extends PHPUnit_Framework_TestCase {
 
     public function setUp() {
-        ob_start();
+        // ob_start();
     }
 
     public function tearDown() {
-        ob_end_clean();
+        // ob_end_clean();
     }
 
     public function testLoadNormal() {
         $app = new App();
-        $app->add(new WhoopsMiddleware);
+
+        $container = $app->getContainer();
+
+        $whoopsGuard = new WhoopsGuard();
+        $whoopsGuard->setApp($app);
+        $whoopsGuard->setRequest($container['request']);
+        $whoopsGuard->setHandlers([]);
+        $whoopsGuard->install();
+
         $app->get('/foo', function ($req, $res) {
             $res->write('It is work');
             return $res;
@@ -46,11 +55,22 @@ class SlimWhoopsTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals('It is work', (string)$res->getBody());
     }
 
-    public function testException() {
+    public function testCustomException() {
         $app = new App();
-        $app->add(new WhoopsMiddleware);
+
+        $container = $app->getContainer();
+
+        $whoopsGuard = new WhoopsGuard();
+        $whoopsGuard->setApp($app);
+        $whoopsGuard->setRequest($container['request']);
+        $whoopsGuard->setHandlers([]);
+        $whoopsGuard->install();
+
         $app->get('/foo', function ($req, $res) use ($app) {
-            return $this->router->pathFor('index');
+            throw new Exception('Hello');
+
+            $res->write('It is work');
+            return $res;
         });
 
         $env = Environment::mock([
@@ -67,42 +87,9 @@ class SlimWhoopsTest extends PHPUnit_Framework_TestCase {
         $req          = new Request('GET', $uri, $headers, $cookies, $serverParams, $body);
         $res          = new Response();
 
-        $this->setExpectedException('\RuntimeException');
+        $this->setExpectedException('\Exception');
 
         $app($req, $res);
-    }
-
-    public function testMiddlewareIsWorkingAndEditorIsSet() {
-        $app = new App([
-            'settings' => [
-                'debug' => true,
-                'whoops.editor' => 'sublime',
-            ]
-        ]);
-        $container = $app->getContainer();
-        $container['environment'] = function () {
-            return Environment::mock([
-                'SCRIPT_NAME' => '/index.php',
-                'REQUEST_URI' => '/foo',
-                'REQUEST_METHOD' => 'GET'
-            ]);
-        };
-
-        $app->get('/foo', function ($req, $res, $args) {
-            return $res;
-        });
-
-        $app->add(new WhoopsMiddleware);
-
-        // Invoke app
-        $response = $app->run();
-
-        // Get added whoops handlers
-        $handlers = $container['whoops']->getHandlers();
-
-        // Only 1 will got because the JSON handler will not added if it is not ajax request
-        $this->assertEquals(1, count($handlers));
-        $this->assertEquals('subl://open?url=file://test_path&line=169', $handlers[0]->getEditorHref('test_path', 169));
     }
 
 }

@@ -1,14 +1,15 @@
 <?php
-use \Slim\App;
-use \Slim\Http\Environment;
-use \Slim\Http\Uri;
-use \Slim\Http\Body;
-use \Slim\Http\Headers;
-use \Slim\Http\Request;
-use \Slim\Http\Response;
+use Slim\App;
+use Slim\Http\Environment;
+use Slim\Http\Uri;
+use Slim\Http\Body;
+use Slim\Http\Headers;
+use Slim\Http\Request;
+use Slim\Http\Response;
+
 use Zeuxisoo\Whoops\Provider\Slim\WhoopsMiddleware;
 
-class SlimWhoopsDICompatibilityTest extends PHPUnit_Framework_TestCase {
+class WhoopsMiddlewareTest extends PHPUnit_Framework_TestCase {
 
     public function setUp() {
         ob_start();
@@ -18,9 +19,9 @@ class SlimWhoopsDICompatibilityTest extends PHPUnit_Framework_TestCase {
         ob_end_clean();
     }
 
-    public function testLoadNormalDICompatibility() {
+    public function testLoadNormal() {
         $app = new App();
-        $app->add(new WhoopsMiddleware($app));
+        $app->add(new WhoopsMiddleware);
         $app->get('/foo', function ($req, $res) {
             $res->write('It is work');
             return $res;
@@ -46,9 +47,9 @@ class SlimWhoopsDICompatibilityTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals('It is work', (string)$res->getBody());
     }
 
-    public function testExceptionDICompatibility() {
+    public function testException() {
         $app = new App();
-        $app->add(new WhoopsMiddleware($app));
+        $app->add(new WhoopsMiddleware);
         $app->get('/foo', function ($req, $res) use ($app) {
             return $this->router->pathFor('index');
         });
@@ -72,7 +73,7 @@ class SlimWhoopsDICompatibilityTest extends PHPUnit_Framework_TestCase {
         $app($req, $res);
     }
 
-    public function testMiddlewareIsWorkingAndEditorIsSetDICompatibility() {
+    public function testMiddlewareIsWorkingAndEditorIsSet() {
         $app = new App([
             'settings' => [
                 'debug' => true,
@@ -92,7 +93,7 @@ class SlimWhoopsDICompatibilityTest extends PHPUnit_Framework_TestCase {
             return $res;
         });
 
-        $app->add(new WhoopsMiddleware($app));
+        $app->add(new WhoopsMiddleware);
 
         // Invoke app
         $response = $app->run();
