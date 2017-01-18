@@ -22,11 +22,11 @@ $app = new App([
 $container = $app->getContainer();
 
 // Replace the default phpErroHandler and erroHandler without enter/call to middleware
-$whoops = new WhoopsGuard();
-$whoops->setApp($app);
-$whoops->setRequest($container['request']);
-$whoops->setHandlers([]);
-$whoops->install();
+$whoopsGuard = new WhoopsGuard();
+$whoopsGuard->setApp($app);
+$whoopsGuard->setRequest($container['request']);
+$whoopsGuard->setHandlers([]);
+$whoopsGuard->install();
 
 // Throw exception in middleware (If it is not global mode, it will return slim default error page)
 $app->add(function($request, $response, $next) {

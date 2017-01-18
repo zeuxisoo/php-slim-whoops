@@ -22,11 +22,11 @@ class WhoopsMiddleware {
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next) {
         $app = $this->app !== null ? $this->app : $next;
 
-        $whoops = new WhoopsGuard();
-        $whoops->setApp($app);
-        $whoops->setRequest($request);
-        $whoops->setHandlers($this->handlers);
-        $whoops->install();
+        $whoopsGuard = new WhoopsGuard();
+        $whoopsGuard->setApp($app);
+        $whoopsGuard->setRequest($request);
+        $whoopsGuard->setHandlers($this->handlers);
+        $whoopsGuard->install();
 
         return $app($request, $response);
     }
