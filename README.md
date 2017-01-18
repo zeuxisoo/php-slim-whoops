@@ -50,6 +50,39 @@ In this case, You **must** ensure this line is first added and on top of other m
 In this case, You can place this line anywhere no position required
 
 	$app->add(new \Zeuxisoo\Whoops\Provider\Slim\WhoopsMiddleware($app));
+	
+**Global mode**
+
+In this case, The following code can make Whoops errors in the global scope, whether you have destroyed the program's life cycle
+
+	$whoopsGuard = new \Zeuxisoo\Whoops\Provider\Slim\WhoopsGuard();
+	$whoopsGuard->setApp($app);
+	$whoopsGuard->setRequest($container['request']);
+	$whoopsGuard->setHandlers([]);
+	$whoopsGuard->install();
+	
+**Custom Whoops Handler**
+
+In this case, You can push custom handler to whoops. For example:
+
+A handler like:
+
+	$simplyErrorHandler = function($exception, $inspector, $run) {
+	    $message = $exception->getMessage();
+	    $title   =  $inspector->getExceptionName();
+	
+	    echo "{$title} -> {$message}";
+	    exit;
+	};
+
+Middleware case like:
+
+	new \Zeuxisoo\Whoops\Provider\Slim\WhoopsMiddleware($app, [$simplyErrorHandler]);
+	
+Global mode case like:
+	
+	$whoopsGuard = new \Zeuxisoo\Whoops\Provider\Slim\WhoopsGuard();
+	$whoopsGuard->setHandlers([$simplyErrorHandler]);
 
 ## Options
 
