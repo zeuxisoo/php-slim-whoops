@@ -81,6 +81,10 @@ class WhoopsGuard {
             };
 
             $container['whoops'] = $whoops;
+
+            return $whoops;
+        }else{
+            return null;
         }
     }
 
