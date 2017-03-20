@@ -1,5 +1,7 @@
-/vendor/
+/examples/cache/views
+/vendor
+/report
+/tests/_log
+
 composer.lock
 composer.phar
-tests/_log/
-examples/cache/views/
