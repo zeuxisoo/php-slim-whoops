@@ -7,6 +7,7 @@ use Slim\Http\Headers;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
+use Whoops\Handler\CallbackHandler as WhoopsCallbackHandler;
 use Whoops\Handler\JsonResponseHandler as WhoopsJsonResponseHandler;
 
 use Zeuxisoo\Whoops\Provider\Slim\WhoopsGuard;
@@ -116,6 +117,32 @@ class WhoopsGuardTest extends PHPUnit_Framework_TestCase {
         unset($_SERVER['HTTP_X_REQUESTED_WITH']);
 
         $this->assertInstanceOf(WhoopsJsonResponseHandler::class, $handlers[1]);
+    }
+
+    public function testCustomWhoopsHandler() {
+        $app = new App([
+            'settings' => [
+                'debug' => true,
+            ]
+        ]);
+
+        $container = $app->getContainer();
+
+        $whoopsGuard = new WhoopsGuard();
+        $whoopsGuard->setApp($app);
+        $whoopsGuard->setRequest($container['request']);
+        $whoopsGuard->setHandlers([function($exception, $inspector, $run) {
+            $message = $exception->getMessage();
+            $title   = $inspector->getExceptionName();
+
+            echo "{$title} -> {$message}";
+            exit;
+        }]);
+        $whoopsGuard->install();
+
+        $handlers = $container['whoops']->getHandlers();
+
+        $this->assertInstanceOf(WhoopsCallbackHandler::class, $handlers[1]);
     }
 
 }
