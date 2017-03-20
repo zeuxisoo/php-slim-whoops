@@ -7,6 +7,8 @@ use Slim\Http\Headers;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
+use Whoops\Handler\JsonResponseHandler as WhoopsJsonResponseHandler;
+
 use Zeuxisoo\Whoops\Provider\Slim\WhoopsGuard;
 
 class WhoopsGuardTest extends PHPUnit_Framework_TestCase {
@@ -90,6 +92,30 @@ class WhoopsGuardTest extends PHPUnit_Framework_TestCase {
         $this->setExpectedException('\Exception');
 
         $app($req, $res);
+    }
+
+    public function testJsonResponseHandlerWasInstalledWhenAjaxSent() {
+        $_SERVER['HTTP_X_REQUESTED_WITH'] = 'xmlhttprequest';
+
+        $app = new App([
+            'settings' => [
+                'debug' => true,
+            ]
+        ]);
+
+        $container = $app->getContainer();
+
+        $whoopsGuard = new WhoopsGuard();
+        $whoopsGuard->setApp($app);
+        $whoopsGuard->setRequest($container['request']);
+        $whoopsGuard->setHandlers([]);
+        $whoopsGuard->install();
+
+        $handlers = $container['whoops']->getHandlers();
+
+        unset($_SERVER['HTTP_X_REQUESTED_WITH']);
+
+        $this->assertInstanceOf(WhoopsJsonResponseHandler::class, $handlers[1]);
     }
 
 }
