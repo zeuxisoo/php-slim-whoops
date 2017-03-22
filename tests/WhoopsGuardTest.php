@@ -165,5 +165,49 @@ class WhoopsGuardTest extends PHPUnit_Framework_TestCase {
         $this->assertInstanceOf(WhoopsErrorHandler::class, $container->get('phpErrorHandler'));
         $this->assertInstanceOf(WhoopsErrorHandler::class, $container->get('errorHandler'));
     }
+    
+    public function testErrorHandlerInStandardContainerWithoutArrayAccessIsReplaced() {
+        $container = new ContainerWithoutArrayAccess([
+            'settings' => [
+                'debug' => true,
+            ]
+        ]);
+        
+        $app = new App($container);
+
+        $whoopsGuard = new WhoopsGuard();
+        $whoopsGuard->setApp($app);
+        $whoopsGuard->setRequest($container->get('request'));
+        $whoopsGuard->setHandlers([]);
+        $whoopsGuard->install();
+
+        $this->assertInstanceOf(WhoopsRun::class, $container->get('whoops'));
+        $this->assertInstanceOf(WhoopsErrorHandler::class, $container->get('phpErrorHandler'));
+        $this->assertInstanceOf(WhoopsErrorHandler::class, $container->get('errorHandler'));
+    }
+    
+    public function testErrorHandlerInStrangeContainerWithoutArrayAccessIsReplaced() {
+        $container = new StrangeContainerWithoutArrayAccess([
+            'settings' => [
+                'debug' => true,
+            ]
+        ]);
+        
+        $app = new App($container);
+
+        $whoopsGuard = new WhoopsGuard();
+        $whoopsGuard->setApp($app);
+        $whoopsGuard->setRequest($container->get('request'));
+        $whoopsGuard->setHandlers([]);
+        
+        $whoopsGuard->setContainerSetImplementation(function($container,$id,$value){$container->strangeSetter($value, $id);});
+        
+        $whoopsGuard->install();
+
+        
+        $this->assertInstanceOf(WhoopsRun::class, $container->get('whoops'));
+        $this->assertInstanceOf(WhoopsErrorHandler::class, $container->get('phpErrorHandler'));
+        $this->assertInstanceOf(WhoopsErrorHandler::class, $container->get('errorHandler'));
+    }
 
 }
