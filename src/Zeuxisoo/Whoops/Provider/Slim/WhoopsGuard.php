@@ -25,11 +25,15 @@ class WhoopsGuard {
     public function setHandlers(array $handlers) {
         $this->handlers = $handlers;
     }
-
+    
+    public function setContainerSetImplementation($containerSetImplementation) {
+        $this->containerSetImplementation=$containerSetImplementation;
+    }
+    
     public function install() {
         $container   = $this->app->getContainer();
-        $settings    = $container['settings'];
-        $environment = $container['environment'];
+        $settings    = $container->get('settings');
+        $environment = $container->get('environment');
 
         if (isset($settings['debug']) === true && $settings['debug'] === true) {
             // Enable PrettyPageHandler with editor options

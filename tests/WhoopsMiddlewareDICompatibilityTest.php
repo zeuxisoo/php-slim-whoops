@@ -99,7 +99,7 @@ class WhoopsMiddlewareDICompatibilityTest extends PHPUnit_Framework_TestCase {
         $response = $app->run();
 
         // Get added whoops handlers
-        $handlers = $container['whoops']->getHandlers();
+        $handlers = $container->get('whoops')->getHandlers();
 
         // Only 1 will got because the JSON handler will not added if it is not ajax request
         $this->assertEquals(1, count($handlers));

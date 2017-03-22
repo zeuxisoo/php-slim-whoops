@@ -31,7 +31,7 @@ class WhoopsGuardTest extends PHPUnit_Framework_TestCase {
 
         $whoopsGuard = new WhoopsGuard();
         $whoopsGuard->setApp($app);
-        $whoopsGuard->setRequest($container['request']);
+        $whoopsGuard->setRequest($container->get('request'));
         $whoopsGuard->setHandlers([]);
         $whoopsGuard->install();
 
@@ -67,7 +67,7 @@ class WhoopsGuardTest extends PHPUnit_Framework_TestCase {
 
         $whoopsGuard = new WhoopsGuard();
         $whoopsGuard->setApp($app);
-        $whoopsGuard->setRequest($container['request']);
+        $whoopsGuard->setRequest($container->get('request'));
         $whoopsGuard->setHandlers([]);
         $whoopsGuard->install();
 
@@ -110,11 +110,11 @@ class WhoopsGuardTest extends PHPUnit_Framework_TestCase {
 
         $whoopsGuard = new WhoopsGuard();
         $whoopsGuard->setApp($app);
-        $whoopsGuard->setRequest($container['request']);
+        $whoopsGuard->setRequest($container->get('request'));
         $whoopsGuard->setHandlers([]);
         $whoopsGuard->install();
 
-        $handlers = $container['whoops']->getHandlers();
+        $handlers = $container->get('whoops')->getHandlers();
 
         unset($_SERVER['HTTP_X_REQUESTED_WITH']);
 
@@ -132,7 +132,7 @@ class WhoopsGuardTest extends PHPUnit_Framework_TestCase {
 
         $whoopsGuard = new WhoopsGuard();
         $whoopsGuard->setApp($app);
-        $whoopsGuard->setRequest($container['request']);
+        $whoopsGuard->setRequest($container->get('request'));
         $whoopsGuard->setHandlers([function($exception, $inspector, $run) {
             $message = $exception->getMessage();
             $title   = $inspector->getExceptionName();
@@ -142,7 +142,7 @@ class WhoopsGuardTest extends PHPUnit_Framework_TestCase {
         }]);
         $whoopsGuard->install();
 
-        $handlers = $container['whoops']->getHandlers();
+        $handlers = $container->get('whoops')->getHandlers();
 
         $this->assertInstanceOf(WhoopsCallbackHandler::class, $handlers[1]);
     }
@@ -158,12 +158,12 @@ class WhoopsGuardTest extends PHPUnit_Framework_TestCase {
 
         $whoopsGuard = new WhoopsGuard();
         $whoopsGuard->setApp($app);
-        $whoopsGuard->setRequest($container['request']);
+        $whoopsGuard->setRequest($container->get('request'));
         $whoopsGuard->setHandlers([]);
         $whoopsGuard->install();
 
-        $this->assertInstanceOf(WhoopsErrorHandler::class, $container['phpErrorHandler']);
-        $this->assertInstanceOf(WhoopsErrorHandler::class, $container['errorHandler']);
+        $this->assertInstanceOf(WhoopsErrorHandler::class, $container->get('phpErrorHandler'));
+        $this->assertInstanceOf(WhoopsErrorHandler::class, $container->get('errorHandler'));
     }
 
 }
