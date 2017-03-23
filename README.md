@@ -14,19 +14,19 @@ Install the composer
 
 Edit `composer.json`
 
-| Slim | Whoops    | Version | Global Mode |
-| ---- | --------- | ------- | ----------- |
-|   1  |  n/a      | 0.1.*   | no          |
-|   2  |  1.*      | 0.3.*   | no          |
-|   3  |  <= 1.*   | 0.4.*   | no          |
-|   3  |  >= 2.*   | 0.5.*   | no          |
-|   3  |  >= 2.*   | 0.6.*   | yes         |
+| Slim | Whoops    | Version | Global Mode | PHP DI |
+| ---- | --------- | ------- | ----------- | ------ |
+|   1  |  n/a      | 0.1.*   | no          | no     |
+|   2  |  1.*      | 0.3.*   | no          | no     |
+|   3  |  <= 1.*   | 0.4.*   | no          | no     |
+|   3  |  >= 2.*   | 0.5.*   | no          | no     |
+|   3  |  >= 2.*   | 0.6.*   | yes         | yes    |
 
 For `Slim framework 3`, The `composer.json` will looks like
 
 	{
 		"require": {
-	        "zeuxisoo/slim-whoops": "0.5.*"
+			"zeuxisoo/slim-whoops": "0.6.*"
 		}
 	}
 
