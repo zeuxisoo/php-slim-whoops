@@ -14,10 +14,10 @@ class WhoopsGuard {
     private $app      = null;
     private $handlers = [];
     private $containerSetImplementation;
-    
+
     function __construct() {
-        $this->containerSetImplementation=function($container,$id,$value) {
-            $container->set($id,$value);
+        $this->containerSetImplementation = function($container, $id, $value) {
+            $container->set($id, $value);
         };
     }
 
@@ -32,11 +32,11 @@ class WhoopsGuard {
     public function setHandlers(array $handlers) {
         $this->handlers = $handlers;
     }
-    
+
     public function setContainerSetImplementation($containerSetImplementation) {
-        $this->containerSetImplementation=$containerSetImplementation;
+        $this->containerSetImplementation = $containerSetImplementation;
     }
-    
+
     public function install() {
         $container   = $this->app->getContainer();
         $settings    = $container->get('settings');
@@ -86,7 +86,7 @@ class WhoopsGuard {
             }
 
             $whoops->register();
-            
+
             $errorHandler = function() use ($whoops) {
                 return new WhoopsErrorHandler($whoops);
             };
@@ -94,8 +94,7 @@ class WhoopsGuard {
             if($container instanceof \ArrayAccess) {
                 $container['phpErrorHandler'] = $container['errorHandler'] = $errorHandler;
                 $container['whoops'] = $whoops;
-            }
-            else {
+            }else {
                 call_user_func($this->containerSetImplementation, $container, 'phpErrorHandler', $errorHandler);
                 call_user_func($this->containerSetImplementation, $container, 'errorHandler', $errorHandler);
                 call_user_func($this->containerSetImplementation, $container, 'whoops', $whoops);
