@@ -13,6 +13,13 @@ class WhoopsGuard {
 
     private $app      = null;
     private $handlers = [];
+    private $containerSetImplementation;
+    
+    function __construct() {
+        $this->containerSetImplementation=function($container,$id,$value) {
+            $container->set($id,$value);
+        };
+    }
 
     public function setApp(SlimApp $app) {
         $this->app = $app;
@@ -25,11 +32,15 @@ class WhoopsGuard {
     public function setHandlers(array $handlers) {
         $this->handlers = $handlers;
     }
-
+    
+    public function setContainerSetImplementation($containerSetImplementation) {
+        $this->containerSetImplementation=$containerSetImplementation;
+    }
+    
     public function install() {
         $container   = $this->app->getContainer();
-        $settings    = $container['settings'];
-        $environment = $container['environment'];
+        $settings    = $container->get('settings');
+        $environment = $container->get('environment');
 
         if (isset($settings['debug']) === true && $settings['debug'] === true) {
             // Enable PrettyPageHandler with editor options
@@ -75,12 +86,20 @@ class WhoopsGuard {
             }
 
             $whoops->register();
-
-            $container['phpErrorHandler'] = $container['errorHandler'] = function() use ($whoops) {
+            
+            $errorHandler = function() use ($whoops) {
                 return new WhoopsErrorHandler($whoops);
             };
 
-            $container['whoops'] = $whoops;
+            if($container instanceof \ArrayAccess) {
+                $container['phpErrorHandler'] = $container['errorHandler'] = $errorHandler;
+                $container['whoops'] = $whoops;
+            }
+            else {
+                call_user_func($this->containerSetImplementation, $container, 'phpErrorHandler', $errorHandler);
+                call_user_func($this->containerSetImplementation, $container, 'errorHandler', $errorHandler);
+                call_user_func($this->containerSetImplementation, $container, 'whoops', $whoops);
+            }
 
             return $whoops;
         }else{
