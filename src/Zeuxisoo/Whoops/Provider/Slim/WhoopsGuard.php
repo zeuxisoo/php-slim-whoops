@@ -50,6 +50,10 @@ class WhoopsGuard {
                 $prettyPageHandler->setEditor($settings['whoops.editor']);
             }
 
+            if (empty($settings['whoops.pageTitle']) === false) {
+                $prettyPageHandler->setPageTitle($settings['whoops.pageTitle']);
+            }
+
             // Add more information to the PrettyPageHandler
             $prettyPageHandler->addDataTable('Slim Application', [
                 'Application Class' => get_class($this->app),
