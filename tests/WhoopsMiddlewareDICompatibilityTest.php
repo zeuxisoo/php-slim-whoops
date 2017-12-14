@@ -78,6 +78,7 @@ class WhoopsMiddlewareDICompatibilityTest extends PHPUnit_Framework_TestCase {
             'settings' => [
                 'debug' => true,
                 'whoops.editor' => 'sublime',
+                'whoops.pageTitle' => 'Custom Page Title',
             ]
         ]);
         $container = $app->getContainer();
@@ -104,6 +105,7 @@ class WhoopsMiddlewareDICompatibilityTest extends PHPUnit_Framework_TestCase {
         // Only 1 will got because the JSON handler will not added if it is not ajax request
         $this->assertEquals(1, count($handlers));
         $this->assertEquals('subl://open?url=file://test_path&line=169', $handlers[0]->getEditorHref('test_path', 169));
+        $this->assertEquals('Custom Page Title', $handlers[0]->getPageTitle());
     }
 
 }
