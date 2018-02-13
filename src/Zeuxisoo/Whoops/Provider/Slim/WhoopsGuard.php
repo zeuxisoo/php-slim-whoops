@@ -50,8 +50,8 @@ class WhoopsGuard {
                 $prettyPageHandler->setEditor($settings['whoops.editor']);
             }
 
-            if (empty($settings['whoops.pageTitle']) === false) {
-                $prettyPageHandler->setPageTitle($settings['whoops.pageTitle']);
+            if (empty($settings['whoops.page_title']) === false) {
+                $prettyPageHandler->setPageTitle($settings['whoops.page_title']);
             }
 
             // Add more information to the PrettyPageHandler

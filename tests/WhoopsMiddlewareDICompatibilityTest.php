@@ -78,7 +78,7 @@ class WhoopsMiddlewareDICompatibilityTest extends PHPUnit_Framework_TestCase {
             'settings' => [
                 'debug' => true,
                 'whoops.editor' => 'sublime',
-                'whoops.pageTitle' => 'Custom Page Title',
+                'whoops.page_title' => 'Custom Page Title',
             ]
         ]);
         $container = $app->getContainer();
