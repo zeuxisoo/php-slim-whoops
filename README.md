@@ -70,7 +70,7 @@ A handler like:
 
 	$simplyErrorHandler = function($exception, $inspector, $run) {
 	    $message = $exception->getMessage();
-	    $title   =  $inspector->getExceptionName();
+	    $title   = $inspector->getExceptionName();
 
 	    echo "{$title} -> {$message}";
 	    exit;
@@ -87,7 +87,7 @@ Global mode case like:
 
 ## Options
 
-Opening referenced files with your favorite editor or IDE
+E.g. Opening referenced files with your favorite editor or IDE and so on
 
 	$app = new App([
 	    'settings' => [
