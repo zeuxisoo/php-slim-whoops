@@ -16,9 +16,9 @@
         "filp/whoops": "2.1.*"
     },
     "require-dev": {
-    	"slim/slim": "3.8.*",
+        "slim/slim": "3.9.*",
         "phpunit/phpunit": "4.8.*",
-        "slim/twig-view": "2.2.*"
+        "slim/twig-view": "2.3.*"
     },
     "autoload": {
         "psr-0": {
