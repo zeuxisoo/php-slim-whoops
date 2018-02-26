@@ -28,7 +28,7 @@ class WhoopsMiddleware {
         $whoopsGuard->setHandlers($this->handlers);
         $whoopsGuard->install();
 
-        return $app($request, $response);
+        return $next($request, $response);
     }
 
 }
