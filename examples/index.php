@@ -54,6 +54,12 @@
             <tbody>
                 <tr>
                     <td>
+                        <a href="./better-di.php">better-di.php</a>
+                    </td>
+                    <td>Make sure the other middlewares can break the lifecycle when better di mode is enabled</td>
+                </tr>
+                <tr>
+                    <td>
                         <a href="./twig-exception.php">twig-exception.php</a>
                     </td>
                     <td>Raise exception when twig template not exists</td>
