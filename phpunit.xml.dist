@@ -9,6 +9,7 @@
         stopOnFailure="false"
         syntaxCheck="false"
         bootstrap="tests/bootstrap.php"
+        printerClass="Codedungeon\PHPUnitPrettyResultPrinter\Printer"
 >
     <testsuites>
         <testsuite name="Slim Whoops Test Suite">
