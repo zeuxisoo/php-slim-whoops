@@ -18,8 +18,7 @@
     "require-dev": {
         "slim/slim": "3.9.*",
         "phpunit/phpunit": "4.8.*",
-        "slim/twig-view": "2.3.*",
-        "codedungeon/phpunit-result-printer": "^0.5.4"
+        "slim/twig-view": "2.3.*"
     },
     "autoload": {
         "psr-0": {
