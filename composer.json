@@ -17,7 +17,7 @@
     },
     "require-dev": {
         "slim/slim": "3.10.*",
-        "phpunit/phpunit": "4.8.*",
+        "phpunit/phpunit": "4.8.* || 5.7.*",
         "slim/twig-view": "2.3.*"
     },
     "autoload": {
