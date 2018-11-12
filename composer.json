@@ -18,7 +18,7 @@
     "require-dev": {
         "slim/slim": "3.11.*",
         "phpunit/phpunit": "4.8.* || 5.7.*",
-        "slim/twig-view": "2.3.*"
+        "slim/twig-view": "2.4.*"
     },
     "autoload": {
         "psr-0": {
