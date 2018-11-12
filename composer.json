@@ -20,6 +20,9 @@
         "phpunit/phpunit": "4.8.* || 5.7.*",
         "slim/twig-view": "2.4.*"
     },
+    "suggest": {
+        "zeuxisoo/php-slimork": "A small skeleton application to quick start projects using slim framework with other packages"
+    },
     "autoload": {
         "psr-0": {
             "Zeuxisoo\\Whoops\\Provider\\Slim": "src/"
