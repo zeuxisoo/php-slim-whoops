@@ -13,7 +13,7 @@
     }],
     "require": {
         "php": ">=5.5.0",
-        "filp/whoops": "2.2.*"
+        "filp/whoops": "2.3.*"
     },
     "require-dev": {
         "slim/slim": "3.10.*",
