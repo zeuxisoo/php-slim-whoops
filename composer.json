@@ -12,16 +12,15 @@
             "role": "Developer"
     }],
     "require": {
-        "php": ">=5.5.0",
-        "filp/whoops": "2.3.*"
+        "php": "^7.1",
+        "filp/whoops": "^2.3"
     },
     "require-dev": {
-        "slim/slim": "3.12.*",
-        "phpunit/phpunit": "4.8.* || 5.7.*",
-        "slim/twig-view": "2.4.*"
-    },
-    "suggest": {
-        "zeuxisoo/php-slimork": "A small skeleton application to quick start projects using slim framework with other packages"
+        "slim/slim": "4.x-dev#6e5e408",
+        "slim/psr7": "dev-master#e900e7e",
+        "slim/http": "dev-master#e129bd5",
+        "slim/twig-view": "dev-master#06ef39b",
+        "phpunit/phpunit": "^7.5"
     },
     "autoload": {
         "psr-0": {
