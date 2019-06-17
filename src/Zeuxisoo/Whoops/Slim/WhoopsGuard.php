@@ -1,28 +1,24 @@
 <?php
-namespace Zeuxisoo\Whoops\Provider\Slim;
+namespace Zeuxisoo\Whoops\Slim;
 
+use Psr\Http\Message\ServerRequestInterface;
 use Slim\App as SlimApp;
-
 use Whoops\Util\Misc;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Handler\JsonResponseHandler;
 
-use Psr\Http\Message\ServerRequestInterface;
-
 class WhoopsGuard {
 
-    private $app      = null;
-    private $handlers = [];
-    private $containerSetImplementation;
+    protected $settings = [];
+    protected $request  = null;
+    protected $handlers = [];
 
-    function __construct() {
-        $this->containerSetImplementation = function($container, $id, $value) {
-            $container->set($id, $value);
-        };
-    }
-
-    public function setApp(SlimApp $app) {
-        $this->app = $app;
+    public function __construct($settings = []) {
+        $this->settings = array_merge([
+            'enable' => true,
+            'editor' => '',
+            'title'  => '',
+        ], $settings);
     }
 
     public function setRequest(ServerRequestInterface $request) {
@@ -33,32 +29,22 @@ class WhoopsGuard {
         $this->handlers = $handlers;
     }
 
-    public function setContainerSetImplementation($containerSetImplementation) {
-        $this->containerSetImplementation = $containerSetImplementation;
-    }
-
     public function install() {
-        $container   = $this->app->getContainer();
-        $settings    = $container->get('settings');
-        $environment = $container->get('environment');
-
-        if (isset($settings['debug']) === true && $settings['debug'] === true) {
+        if ($this->settings['enable'] === true) {
             // Enable PrettyPageHandler with editor options
             $prettyPageHandler = new PrettyPageHandler();
 
-            if (empty($settings['whoops.editor']) === false) {
-                $prettyPageHandler->setEditor($settings['whoops.editor']);
+            if (empty($this->settings['editor']) === false) {
+                $prettyPageHandler->setEditor($this->settings['editor']);
             }
 
-            if (empty($settings['whoops.page_title']) === false) {
-                $prettyPageHandler->setPageTitle($settings['whoops.page_title']);
+            if (empty($this->settings['title']) === false) {
+                $prettyPageHandler->setPageTitle($this->settings['title']);
             }
 
             // Add more information to the PrettyPageHandler
             $prettyPageHandler->addDataTable('Slim Application', [
-                'Application Class' => get_class($this->app),
-                'Script Name'       => $environment->get('SCRIPT_NAME'),
-                'Request URI'       => $environment->get('PATH_INFO') ?: '<none>',
+                'Version' => SlimApp::VERSION,
             ]);
 
             $prettyPageHandler->addDataTable('Slim Application (Request)', array(
@@ -95,18 +81,7 @@ class WhoopsGuard {
                 return new WhoopsErrorHandler($whoops);
             };
 
-            if($container instanceof \ArrayAccess) {
-                $container['phpErrorHandler'] = $container['errorHandler'] = $errorHandler;
-                $container['whoops'] = $whoops;
-            }else {
-                call_user_func($this->containerSetImplementation, $container, 'phpErrorHandler', $errorHandler);
-                call_user_func($this->containerSetImplementation, $container, 'errorHandler', $errorHandler);
-                call_user_func($this->containerSetImplementation, $container, 'whoops', $whoops);
-            }
-
             return $whoops;
-        }else{
-            return null;
         }
     }
 
