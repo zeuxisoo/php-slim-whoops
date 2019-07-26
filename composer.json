@@ -16,10 +16,10 @@
         "filp/whoops": "^2.3"
     },
     "require-dev": {
-        "slim/slim": "4.x-dev#6e5e408",
-        "slim/psr7": "dev-master#e900e7e",
-        "slim/http": "dev-master#e129bd5",
-        "slim/twig-view": "dev-master#06ef39b",
+        "slim/slim": "4.x-dev#04be469",
+        "slim/psr7": "dev-master#573678c",
+        "slim/http": "dev-master#52693db",
+        "slim/twig-view": "dev-master#b8c3e92",
         "phpunit/phpunit": "^7.5"
     },
     "autoload": {
