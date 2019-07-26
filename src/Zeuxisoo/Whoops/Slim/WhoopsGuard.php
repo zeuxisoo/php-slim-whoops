@@ -47,7 +47,7 @@ class WhoopsGuard {
                 'Version' => SlimApp::VERSION,
             ]);
 
-            $prettyPageHandler->addDataTable('Slim Application (Request)', array(
+            $prettyPageHandler->addDataTable('Slim Application (Request)', [
                 'Accept Charset'  => $this->request->getHeader('ACCEPT_CHARSET') ?: '<none>',
                 'Content Charset' => $this->request->getContentCharset() ?: '<none>',
                 'Path'            => $this->request->getUri()->getPath(),
@@ -57,14 +57,14 @@ class WhoopsGuard {
                 'Scheme'          => $this->request->getUri()->getScheme(),
                 'Port'            => $this->request->getUri()->getPort(),
                 'Host'            => $this->request->getUri()->getHost(),
-            ));
+            ]);
 
             // Set Whoops to default exception handler
             $whoops = new \Whoops\Run;
             $whoops->pushHandler($prettyPageHandler);
 
             // Enable JsonResponseHandler when request is AJAX
-            if (Misc::isAjaxRequest()){
+            if (Misc::isAjaxRequest() === true){
                 $whoops->pushHandler(new JsonResponseHandler());
             }
 
@@ -76,10 +76,6 @@ class WhoopsGuard {
             }
 
             $whoops->register();
-
-            $errorHandler = function() use ($whoops) {
-                return new WhoopsErrorHandler($whoops);
-            };
 
             return $whoops;
         }
