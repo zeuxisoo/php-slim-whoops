@@ -43,16 +43,21 @@ class WhoopsGuard {
             }
 
             // Add more information to the PrettyPageHandler
-            $prettyPageHandler->addDataTable('Slim Application', [
-                'Version' => SlimApp::VERSION,
-            ]);
+            $contentCharset = '<none>';
+            if (
+                method_exists($this->request, 'getContentCharset') === true &&
+                $this->request->getContentCharset() !== null
+            ) {
+                $contentCharset = $this->request->getContentCharset();
+            }
 
-            $prettyPageHandler->addDataTable('Slim Application (Request)', [
+            $prettyPageHandler->addDataTable('Slim Application', [
+                'Version'         => SlimApp::VERSION,
                 'Accept Charset'  => $this->request->getHeader('ACCEPT_CHARSET') ?: '<none>',
-                'Content Charset' => $this->request->getContentCharset() ?: '<none>',
+                'Content Charset' => $contentCharset,
+                'HTTP Method'     => $this->request->getMethod(),
                 'Path'            => $this->request->getUri()->getPath(),
                 'Query String'    => $this->request->getUri()->getQuery() ?: '<none>',
-                'HTTP Method'     => $this->request->getMethod(),
                 'Base URL'        => (string) $this->request->getUri(),
                 'Scheme'          => $this->request->getUri()->getScheme(),
                 'Port'            => $this->request->getUri()->getPort(),
