@@ -19,12 +19,11 @@
         "slim/slim": "4.x-dev#2b0ed80",
         "slim/psr7": "dev-master#e2d026e",
         "slim/http": "dev-master#52693db",
-        "slim/twig-view": "dev-master#06ef39b",
-        "phpunit/phpunit": "^7.5"
+        "slim/twig-view": "dev-master#06ef39b"
     },
     "autoload": {
-        "psr-0": {
-            "Zeuxisoo\\Whoops\\Slim": "src/"
+        "psr-4": {
+            "Zeuxisoo\\": "src/Zeuxisoo"
         }
     }
 }
