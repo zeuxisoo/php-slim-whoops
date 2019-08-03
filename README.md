@@ -22,7 +22,7 @@ Edit `composer.json`
 |   3  |  <= 1.*   | 0.4.*   | no          | no     |
 |   3  |  >= 2.*   | 0.5.*   | no          | no     |
 |   3  |  >= 2.*   | 0.6.*   | yes         | yes    |
-|   4  |  >= 2.*   | 0.7.*   | no          | yes    |
+|   4  |  >= 2.*   | 0.7.*   | no          | no     |
 
 For `Slim framework 4`, The `composer.json` will looks like
 
