@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8ac89e7ca3394b6fd859dfb85c34f117",
+    "content-hash": "c70b2a9b9fa2ec06070cbef586c87469",
     "packages": [
         {
             "name": "filp/whoops",
@@ -1227,6 +1227,46 @@
             "time": "2018-10-30T17:12:04+00:00"
         },
         {
+            "name": "ralouphie/getallheaders",
+            "version": "3.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ralouphie/getallheaders.git",
+                "reference": "120b605dfeb996808c31b6477290a714d356e822"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ralouphie/getallheaders/zipball/120b605dfeb996808c31b6477290a714d356e822",
+                "reference": "120b605dfeb996808c31b6477290a714d356e822",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6"
+            },
+            "require-dev": {
+                "php-coveralls/php-coveralls": "^2.1",
+                "phpunit/phpunit": "^5 || ^6.5"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/getallheaders.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ralph Khattar",
+                    "email": "ralph.khattar@gmail.com"
+                }
+            ],
+            "description": "A polyfill for getallheaders.",
+            "time": "2019-03-08T08:55:37+00:00"
+        },
+        {
             "name": "sebastian/code-unit-reverse-lookup",
             "version": "1.0.1",
             "source": {
@@ -1873,19 +1913,20 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/slimphp/Slim-Psr7.git",
-                "reference": "573678c2e7259b1d0aabcefb05cee5f4b1cadce0"
+                "reference": "e2d026e2c7be606cb6715916f3f5385df6687df2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/slimphp/Slim-Psr7/zipball/573678c2e7259b1d0aabcefb05cee5f4b1cadce0",
-                "reference": "573678c2e7259b1d0aabcefb05cee5f4b1cadce0",
+                "url": "https://api.github.com/repos/slimphp/Slim-Psr7/zipball/e2d026e2c7be606cb6715916f3f5385df6687df2",
+                "reference": "e2d026e2c7be606cb6715916f3f5385df6687df2",
                 "shasum": ""
             },
             "require": {
                 "fig/http-message-util": "^1.1",
                 "php": "^7.1",
                 "psr/http-factory": "^1.0",
-                "psr/http-message": "^1.0"
+                "psr/http-message": "^1.0",
+                "ralouphie/getallheaders": "^3"
             },
             "provide": {
                 "psr/http-message-implementation": "1.0"
@@ -1896,7 +1937,6 @@
                 "php-http/psr7-integration-tests": "dev-master",
                 "phpstan/phpstan": "^0.10",
                 "phpunit/phpunit": "^6.0|^7.0",
-                "ralouphie/getallheaders": "^2",
                 "squizlabs/php_codesniffer": "^3.3"
             },
             "type": "library",
@@ -1938,7 +1978,7 @@
                 "psr-7",
                 "psr7"
             ],
-            "time": "2019-07-20T00:50:32+00:00"
+            "time": "2019-08-02T23:47:21+00:00"
         },
         {
             "name": "slim/slim",
@@ -1946,12 +1986,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/slimphp/Slim.git",
-                "reference": "04be46919d42ee26e294a7426dd5bb68d013ff8f"
+                "reference": "2b0ed80b2ab4acfb5e7648797b8202e4d9aea06d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/slimphp/Slim/zipball/04be46919d42ee26e294a7426dd5bb68d013ff8f",
-                "reference": "04be46919d42ee26e294a7426dd5bb68d013ff8f",
+                "url": "https://api.github.com/repos/slimphp/Slim/zipball/2b0ed80b2ab4acfb5e7648797b8202e4d9aea06d",
+                "reference": "2b0ed80b2ab4acfb5e7648797b8202e4d9aea06d",
                 "shasum": ""
             },
             "require": {
@@ -2027,7 +2067,7 @@
                 "micro",
                 "router"
             ],
-            "time": "2019-07-19T18:22:32+00:00"
+            "time": "2019-08-01T16:11:29+00:00"
         },
         {
             "name": "slim/twig-view",
