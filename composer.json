@@ -21,7 +21,7 @@
         "slim/http": "dev-master#52693db",
         "slim/twig-view": "dev-master#06ef39b",
         "equip/dispatch": "^2.0",
-        "phpunit/phpunit": "^8.3"
+        "phpunit/phpunit": "^7.5"
     },
     "autoload": {
         "psr-4": {
