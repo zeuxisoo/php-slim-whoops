@@ -25,4 +25,12 @@
             <directory suffix=".php">./src/</directory>
         </whitelist>
     </filter>
+    <logging>
+        <log
+            type="coverage-html"
+            target="./report"
+            lowUpperBound="20"
+            highLowerBound="50"
+        />
+    </logging>
 </phpunit>
