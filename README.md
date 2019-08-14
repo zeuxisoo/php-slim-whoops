@@ -4,6 +4,7 @@ PHP whoops error on slim framework
 
 ## Status
 
+[![Build Status](https://travis-ci.org/zeuxisoo/php-slim-whoops.svg?branch=0.7.x)](https://travis-ci.org/zeuxisoo/php-slim-whoops)
 [![Downloads this Month](https://img.shields.io/packagist/dm/zeuxisoo/slim-whoops.svg)](https://packagist.org/packages/zeuxisoo/slim-whoops)
 [![Latest Stable Version](https://poser.pugx.org/zeuxisoo/slim-whoops/v/stable)](https://github.com/zeuxisoo/php-slim-whoops/releases)
 
