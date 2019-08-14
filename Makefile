@@ -1,4 +1,4 @@
-.PHONY: examples
+.PHONY: examples tests
 
 all:
 	@echo
@@ -7,6 +7,7 @@ all:
 	@echo "make composer : Download the composer tools"
 	@echo "make install  : Install the development vendors and assets by composer"
 	@echo "make examples : Run the examples"
+	@echo "make tests    : Run the test cases"
 	@echo
 
 composer:
@@ -17,3 +18,6 @@ install:
 
 examples:
 	@php -S localhost:8080 -t examples
+
+tests:
+	@php ./vendor/bin/phpunit
