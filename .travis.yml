@@ -4,14 +4,14 @@ dist: trusty
 
 matrix:
   include:
-    - php: 7.1
-      env: ANALYSIS='true'
-    - php: 7.2
-    - php: 7.3
-    - php: nightly
+  - php: 7.1
+    env: ANALYSIS='true'
+  - php: 7.2
+  - php: 7.3
+  - php: nightly
 
-    allow_failures:
-      - php: nightly
+  allow_failures:
+    - php: nightly
 
 before_script:
   - composer require php-coveralls/php-coveralls:^2.1
