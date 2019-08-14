@@ -1,8 +1,11 @@
 <?php
+declare(strict_types=1);
+
 namespace Zeuxisoo\Whoops\Slim;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\App as SlimApp;
+use Whoops\Run as WhoopsRun;
 use Whoops\Util\Misc;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Handler\JsonResponseHandler;
@@ -13,6 +16,11 @@ class WhoopsGuard {
     protected $request  = null;
     protected $handlers = [];
 
+    /**
+     * Instance the whoops guard object
+     *
+     * @param array $settings
+     */
     public function __construct($settings = []) {
         $this->settings = array_merge([
             'enable' => true,
@@ -21,15 +29,32 @@ class WhoopsGuard {
         ], $settings);
     }
 
+    /**
+     * Set the server request object
+     *
+     * @param ServerRequestInterface $request
+     * @return void
+     */
     public function setRequest(ServerRequestInterface $request) {
         $this->request = $request;
     }
 
+    /**
+     * Set the custom handlers for whoops
+     *
+     * @param array $handlers
+     * @return void
+     */
     public function setHandlers(array $handlers) {
         $this->handlers = $handlers;
     }
 
-    public function install() {
+    /**
+     * Install the whoops guard object
+     *
+     * @return WhoopsRun
+     */
+    public function install(): WhoopsRun {
         if ($this->settings['enable'] === true) {
             // Enable PrettyPageHandler with editor options
             $prettyPageHandler = new PrettyPageHandler();
