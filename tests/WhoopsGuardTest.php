@@ -2,8 +2,8 @@
 namespace Zeuxisoo\Whoops\Slim\Tests;
 
 use Slim\Psr7\Factory\ServerRequestFactory;
-use Zeuxisoo\Whoops\Slim\WhoopsGuard;
 use Whoops\Run as WhoopsRun;
+use Zeuxisoo\Whoops\Slim\WhoopsGuard;
 
 class WhoopsGuardTest extends TestCase {
 
@@ -60,7 +60,7 @@ class WhoopsGuardTest extends TestCase {
     public function testPageTitle() {
         $request = (new ServerRequestFactory)->createServerRequest("GET", "http://example.com/");
 
-        $guard = new WhoopsGuard([ 'title' => 'Hello World' ]);
+        $guard = new WhoopsGuard([ 'title' => 'Hello World', ]);
         $guard->setRequest($request);
 
         $whoops = $guard->install();
