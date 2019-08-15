@@ -35,7 +35,7 @@ class WhoopsGuard {
      * @param ServerRequestInterface $request
      * @return void
      */
-    public function setRequest(ServerRequestInterface $request) {
+    public function setRequest(ServerRequestInterface $request): void {
         $this->request = $request;
     }
 
@@ -45,7 +45,7 @@ class WhoopsGuard {
      * @param array $handlers
      * @return void
      */
-    public function setHandlers(array $handlers) {
+    public function setHandlers(array $handlers): void {
         $this->handlers = $handlers;
     }
 
