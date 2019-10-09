@@ -16,10 +16,10 @@
         "filp/whoops": "^2.3"
     },
     "require-dev": {
-        "slim/slim": "4.2.*",
-        "slim/psr7": "0.5.*",
-        "slim/http": "0.7",
-        "slim/twig-view": "dev-master#f460134",
+        "slim/slim": "4.3.*",
+        "slim/psr7": "0.6.*",
+        "slim/http": "0.8",
+        "slim/twig-view": "dev-master#472f2c1",
         "equip/dispatch": "^2.0",
         "phpunit/phpunit": "^7.5"
     },
