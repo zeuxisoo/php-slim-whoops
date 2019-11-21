@@ -18,6 +18,19 @@ class WhoopsGuardTest extends TestCase {
         $this->assertInstanceOf(WhoopsRun::class, $whoops);
     }
 
+    public function testShouldNotReturnWhoopsWhenDisabled() {
+        $request = (new ServerRequestFactory)->createServerRequest("GET", "http://example.com/");
+
+        $guard = new WhoopsGuard([
+            'enable' => false,
+        ]);
+        $guard->setRequest($request);
+
+        $whoops = $guard->install();
+
+        $this->assertNull($whoops);
+    }
+
     public function testSetCustomHandlers() {
         $request = (new ServerRequestFactory)->createServerRequest("GET", "http://example.com/");
 
