@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Zeuxisoo\Whoops\Slim\Tests;
 
 use Slim\Psr7\Factory\ServerRequestFactory;
