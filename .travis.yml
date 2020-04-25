@@ -4,11 +4,11 @@ dist: trusty
 
 matrix:
   include:
+  - php: nightly
     env: ANALYSIS='true'
   - php: 7.2
   - php: 7.3
   - php: 7.4
-  - php: nightly
 
   allow_failures:
     - php: nightly
