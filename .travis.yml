@@ -2,23 +2,28 @@ language: php
 
 matrix:
   include:
-  - php: 7.2
-  - php: 7.3
-  - php: 7.4
-  - php: 8.0
-    env: ANALYSIS='true'
-  - php: nightly
-
+    - php: 7.2
+    - php: 7.3
+    - php: 7.4
+    - php: 8.0
+      env: ANALYSIS='true'
+    - php: nightly
   allow_failures:
     - php: nightly
 
-before_script:
-  - composer require php-coveralls/php-coveralls:^2.2
-  - composer install -n
+install:
+  - composer validate
+  - composer require -n --ignore-platform-reqs php-coveralls/php-coveralls:^2.2
+  - composer install -n --ignore-platform-reqs
 
 script:
-  - if [[ "$ANALYSIS" == 'true' ]]; then vendor/bin/phpunit --coverage-clover clover.xml ; fi
-  - if [[ "$ANALYSIS" != 'true' ]]; then vendor/bin/phpunit ; fi
+  - if [[ "$ANALYSIS" == 'true' ]]; then ./vendor/bin/phpunit --coverage-clover clover.xml ; fi
+  - if [[ "$ANALYSIS" != 'true' ]]; then ./vendor/bin/phpunit ; fi
 
 after_success:
-  - if [[ "$ANALYSIS" == 'true' ]]; then vendor/bin/php-coveralls --coverage_clover=clover.xml -v ; fi
+  - if [[ "$ANALYSIS" == 'true' ]]; then ./vendor/bin/php-coveralls --coverage_clover=clover.xml -v ; fi
+
+cache:
+  directories:
+    - vendor
+    - ~/.composer/cache
