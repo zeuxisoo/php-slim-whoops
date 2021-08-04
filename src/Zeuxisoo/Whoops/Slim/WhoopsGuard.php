@@ -25,6 +25,7 @@ class WhoopsGuard {
         $this->settings = array_merge([
             'enable' => true,
             'editor' => '',
+            'resolver' => '',
             'title'  => '',
         ], $settings);
     }
@@ -64,6 +65,9 @@ class WhoopsGuard {
 
         if (empty($this->settings['editor']) === false) {
             $prettyPageHandler->setEditor($this->settings['editor']);
+        }
+        if (empty($this->settings['resolver']) === false && empty($this->settings['editor']) === false) {
+             $prettyPageHandler->addEditor($this->settings['editor'],$this->settings['resolver']);
         }
 
         if (empty($this->settings['title']) === false) {
