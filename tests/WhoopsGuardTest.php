@@ -71,6 +71,21 @@ class WhoopsGuardTest extends TestCase {
             'subl://open?url=file://%2Ffoo%2Fbar.php&line=10'
         );
     }
+    public function testSetEditorResolver() {
+        $request = (new ServerRequestFactory)->createServerRequest("GET", "http://example.com/");
+
+        $guard = new WhoopsGuard([ 'editor' => 'phpstorm', 'resolver' => 'file://%file:%line' ]);
+        $guard->setRequest($request);
+
+        $whoops = $guard->install();
+
+        $prettyPageHandler = $whoops->getHandlers()[0];
+
+        $this->assertEquals(
+            $prettyPageHandler->getEditorHref('/foo/bar.php', 10),
+            'file://%2Ffoo%2Fbar.php:10'
+        );
+    }
 
     public function testPageTitle() {
         $request = (new ServerRequestFactory)->createServerRequest("GET", "http://example.com/");
