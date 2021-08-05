@@ -52,6 +52,16 @@ Or you can pass more settings to the `WhoopsMiddleware`
         'title'  => 'Custom whoops page title',
     ]));
 
+## Custom Editor String
+
+If the your editor do not included in [default editor list][2], you can set custom it like
+
+    $app->add(new Zeuxisoo\Whoops\Slim\WhoopsMiddleware([
+        'editor' => function($file, $line) {
+            return "http://localhost:8091?message=%file:%line";
+        }
+    ]));
+
 ## Custom Handler Usage
 
 In this usage, you can make your own handler for whoops, like:
@@ -81,3 +91,4 @@ Version `0.2.0`
 
 
 [1]: https://github.com/filp/whoops/blob/master/docs/Framework%20Integration.md#contributing-an-integration-with-a-framework	"Whoops Framework Integration Document"
+[2]: https://github.com/filp/whoops/blob/master/docs/Open%20Files%20In%20An%20Editor.md#open-files-in-an-editor                 "Whoops Framework Open Files In An Editor"
