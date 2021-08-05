@@ -21,7 +21,7 @@ class WhoopsGuard {
      *
      * @param array $settings
      */
-    public function __construct($settings = []) {
+    public function __construct(array $settings = []) {
         $this->settings = array_merge([
             'enable' => true,
             'editor' => '',
