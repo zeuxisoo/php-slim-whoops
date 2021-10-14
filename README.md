@@ -54,7 +54,7 @@ Or you can pass more settings to the `WhoopsMiddleware`
 
 ## Custom Editor String
 
-If your editor do not included in [default editor list][2], you custom it like
+If your editor do not included in [default editor list][2], you can custom it like
 
     $app->add(new Zeuxisoo\Whoops\Slim\WhoopsMiddleware([
         'editor' => function($file, $line) {

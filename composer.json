@@ -16,8 +16,8 @@
         "filp/whoops": "^2.14"
     },
     "require-dev": {
-        "slim/slim": "4.8.*",
-        "slim/psr7": "1.4.*",
+        "slim/slim": "4.9.*",
+        "slim/psr7": "1.5.*",
         "slim/http": "1.2.*",
         "slim/twig-view": "3.2.*",
         "equip/dispatch": "^2.0",
