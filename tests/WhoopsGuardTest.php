@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Zeuxisoo\Whoops\Slim\Tests;
@@ -7,10 +8,11 @@ use Slim\Psr7\Factory\ServerRequestFactory;
 use Whoops\Run as WhoopsRun;
 use Zeuxisoo\Whoops\Slim\WhoopsGuard;
 
-class WhoopsGuardTest extends TestCase {
-
-    public function testShouldReturnWhoops() {
-        $request = (new ServerRequestFactory)->createServerRequest("GET", "http://example.com/");
+class WhoopsGuardTest extends TestCase
+{
+    public function testShouldReturnWhoops()
+    {
+        $request = (new ServerRequestFactory())->createServerRequest('GET', 'http://example.com/');
 
         $guard = new WhoopsGuard();
         $guard->setRequest($request);
@@ -20,8 +22,9 @@ class WhoopsGuardTest extends TestCase {
         $this->assertInstanceOf(WhoopsRun::class, $whoops);
     }
 
-    public function testShouldNotReturnWhoopsWhenDisabled() {
-        $request = (new ServerRequestFactory)->createServerRequest("GET", "http://example.com/");
+    public function testShouldNotReturnWhoopsWhenDisabled()
+    {
+        $request = (new ServerRequestFactory())->createServerRequest('GET', 'http://example.com/');
 
         $guard = new WhoopsGuard([
             'enable' => false,
@@ -33,8 +36,9 @@ class WhoopsGuardTest extends TestCase {
         $this->assertNull($whoops);
     }
 
-    public function testSetCustomHandlers() {
-        $request = (new ServerRequestFactory)->createServerRequest("GET", "http://example.com/");
+    public function testSetCustomHandlers()
+    {
+        $request = (new ServerRequestFactory())->createServerRequest("GET", "http://example.com/");
 
         $guard = new WhoopsGuard();
         $guard->setRequest($request);
@@ -56,8 +60,9 @@ class WhoopsGuardTest extends TestCase {
         $this->assertEquals(2, count($whoops->getHandlers()));
     }
 
-    public function testSetEditor() {
-        $request = (new ServerRequestFactory)->createServerRequest("GET", "http://example.com/");
+    public function testSetEditor()
+    {
+        $request = (new ServerRequestFactory())->createServerRequest('GET', 'http://example.com/');
 
         $guard = new WhoopsGuard([ 'editor' => 'sublime', ]);
         $guard->setRequest($request);
@@ -72,8 +77,9 @@ class WhoopsGuardTest extends TestCase {
         );
     }
 
-    public function testPageTitle() {
-        $request = (new ServerRequestFactory)->createServerRequest("GET", "http://example.com/");
+    public function testPageTitle()
+    {
+        $request = (new ServerRequestFactory())->createServerRequest('GET', 'http://example.com/');
 
         $guard = new WhoopsGuard([ 'title' => 'Hello World', ]);
         $guard->setRequest($request);

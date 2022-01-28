@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Zeuxisoo\Whoops\Slim;
@@ -8,9 +9,10 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class WhoopsMiddleware implements MiddlewareInterface {
-
+class WhoopsMiddleware implements MiddlewareInterface
+{
     protected array $settings = [];
+
     protected array $handlers = [];
 
     /**
@@ -19,7 +21,8 @@ class WhoopsMiddleware implements MiddlewareInterface {
      * @param array $settings
      * @param array $handlers
      */
-    public function __construct(array $settings = [], array $handlers = []) {
+    public function __construct(array $settings = [], array $handlers = [])
+    {
         $this->settings = $settings;
         $this->handlers = $handlers;
     }
@@ -31,7 +34,8 @@ class WhoopsMiddleware implements MiddlewareInterface {
      * @param RequestHandlerInterface $handler
      * @return ResponseInterface
      */
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface {
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    {
         $whoopsGuard = new WhoopsGuard($this->settings);
         $whoopsGuard->setRequest($request);
         $whoopsGuard->setHandlers($this->handlers);
@@ -39,5 +43,4 @@ class WhoopsMiddleware implements MiddlewareInterface {
 
         return $handler->handle($request);
     }
-
 }
