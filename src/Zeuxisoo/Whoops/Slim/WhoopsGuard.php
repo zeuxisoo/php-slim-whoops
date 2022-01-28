@@ -12,9 +12,9 @@ use Whoops\Handler\JsonResponseHandler;
 
 class WhoopsGuard {
 
-    protected $settings = [];
-    protected $request  = null;
-    protected $handlers = [];
+    protected array $settings = [];
+    protected ?ServerRequestInterface $request  = null;
+    protected array $handlers = [];
 
     /**
      * Instance the whoops guard object

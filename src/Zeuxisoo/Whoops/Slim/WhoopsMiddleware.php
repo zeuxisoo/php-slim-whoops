@@ -10,8 +10,8 @@ use Psr\Http\Message\ResponseInterface;
 
 class WhoopsMiddleware implements MiddlewareInterface {
 
-    protected $settings = [];
-    protected $handlers = [];
+    protected array $settings = [];
+    protected array $handlers = [];
 
     /**
      * Instance the whoops middleware object
