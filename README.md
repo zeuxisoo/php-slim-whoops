@@ -1,6 +1,6 @@
 # Slim whoops
 
-PHP whoops error on slim framework
+PHP Whoops error handler for [Slim Framework](https://www.slimframework.com).
 
 ## Status
 
@@ -54,7 +54,7 @@ Or you can pass more settings to the `WhoopsMiddleware`
 
 ## Custom Editor String
 
-If your editor do not included in [default editor list][2], you can custom it like
+If your editor is not included in [default editor list][2], you can customize it like
 
     $app->add(new Zeuxisoo\Whoops\Slim\WhoopsMiddleware([
         'editor' => function($file, $line) {
@@ -86,7 +86,7 @@ Version `0.3.0` or above version
 
 Version `0.2.0`
 
-- You must to install the `whoops` library manually.
+- You must install the `whoops` library manually.
 
 
 
