@@ -1,4 +1,5 @@
 /vendor
 /report
-
+/.idea
+/.vscode
 composer.phar
