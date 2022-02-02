@@ -12,9 +12,9 @@ use Whoops\Handler\JsonResponseHandler;
 
 class WhoopsGuard {
 
-    protected $settings = [];
-    protected $request  = null;
-    protected $handlers = [];
+    protected array $settings = [];
+    protected ?ServerRequestInterface $request  = null;
+    protected array $handlers = [];
 
     /**
      * Instance the whoops guard object
@@ -97,7 +97,7 @@ class WhoopsGuard {
         $whoops->pushHandler($prettyPageHandler);
 
         // Enable JsonResponseHandler when request is AJAX
-        if (Misc::isAjaxRequest() === true){
+        if (Misc::isAjaxRequest() === true) {
             $whoops->pushHandler(new JsonResponseHandler());
         }
 
