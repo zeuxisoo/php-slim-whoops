@@ -12,7 +12,7 @@
             "role": "Developer"
     }],
     "require": {
-        "php": "^7.3 || ^8.0",
+        "php": "^7.4 || ^8.0",
         "filp/whoops": "^2.14"
     },
     "require-dev": {
@@ -21,7 +21,7 @@
         "slim/http": "1.2.*",
         "slim/twig-view": "3.2.*",
         "equip/dispatch": "^2.0",
-        "phpunit/phpunit": "^8.5 || ^9.5"
+        "phpunit/phpunit": "^9.5"
     },
     "autoload": {
         "psr-4": {
